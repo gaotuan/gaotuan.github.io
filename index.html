@@ -19,7 +19,7 @@
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
   
-    <link rel="icon" href="/images/wx_touxiang.png">
+    <link rel="icon" href="/favicon.png">
   
   <link rel="stylesheet" type="text/css" href="/./main.0cf68a.css">
   <style type="text/css">
@@ -43,7 +43,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="" class="js-avatar">
+			<img src="/images/wx_touxiang.png" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">gtt</a></h1>
@@ -103,7 +103,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="" class="js-avatar">
+				<img src="/images/wx_touxiang.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">gtt</h1>
@@ -180,7 +180,8 @@
 <li>以下sql中a表是大表  b表是小表</li>
 <li>a表和b表的结构是一样的，id为主键，modify_time上有索引</li>
 </ul>
-<h4 id="原始sql："><a href="#原始sql：" class="headerlink" title="原始sql："></a>原始sql：</h4><p>UPDATE video_recognition_record_2017_08 a SET a.flag=1<br>WHERE exists<br>    (SELECT 1<br>    FROM video_recognition_record_increment b<br>    WHERE b.id=a.id and b.modify_time&gt;date(date_sub(now( ), interval 1 day)));</p>
+<h4 id="原始sql："><a href="#原始sql：" class="headerlink" title="原始sql："></a>原始sql：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">exists</span></span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">FROM</span> video_recognition_record_increment b</span><br><span class="line">    <span class="keyword">WHERE</span> b.id=a.id <span class="keyword">and</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)));</span><br></pre></td></tr></table></figure>
+
 <h4 id="执行计划："><a href="#执行计划：" class="headerlink" title="执行计划："></a>执行计划：</h4><table>
 <thead>
 <tr>
@@ -231,7 +232,8 @@
 <p><code>该执行计划 对a表的主键全扫描，然后根据a表主键的值 去判断是否在b表中</code>  </p>
 </blockquote>
 <hr>
-<h4 id="用in改写："><a href="#用in改写：" class="headerlink" title="用in改写："></a>用in改写：</h4><p>UPDATE video_recognition_record_2017_08 a SET a.flag=1<br>WHERE id IN<br>    (SELECT id<br>    FROM video_recognition_record_increment b<br>    WHERE b.modify_time&gt;date(date_sub(now( ), interval 1 day)));</p>
+<h4 id="用in改写："><a href="#用in改写：" class="headerlink" title="用in改写："></a>用in改写：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> </span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="keyword">id</span></span><br><span class="line">    <span class="keyword">FROM</span> video_recognition_record_increment b</span><br><span class="line">    <span class="keyword">WHERE</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)));</span><br></pre></td></tr></table></figure>
+
 <h4 id="in改写后的执行计划："><a href="#in改写后的执行计划：" class="headerlink" title="in改写后的执行计划："></a>in改写后的执行计划：</h4><table>
 <thead>
 <tr>
@@ -284,7 +286,8 @@
 <hr>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">由于我们知道 b是小表，所以应该让b表做**驱动表**去关联a表</span><br><span class="line">目前的mysql版本对子查询（in 或者exists）的优化有一定的弊端`s</span><br></pre></td></tr></table></figure>
 
-<h4 id="最终优化后的sql："><a href="#最终优化后的sql：" class="headerlink" title="最终优化后的sql："></a>最终优化后的sql：</h4><p>UPDATE video_recognition_record_2017_08 a  join  video_recognition_record_increment b on a.id=b.id SET a.flag=1<br>where b.modify_time&gt;date(date_sub(now( ), interval 1 day)) ;</p>
+<h4 id="最终优化后的sql："><a href="#最终优化后的sql：" class="headerlink" title="最终优化后的sql："></a>最终优化后的sql：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a  <span class="keyword">join</span>  video_recognition_record_increment b <span class="keyword">on</span> a.id=b.id <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">where</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)) ;</span><br></pre></td></tr></table></figure>
+
 <h4 id="执行计划：-1"><a href="#执行计划：-1" class="headerlink" title="执行计划："></a>执行计划：</h4><table>
 <thead>
 <tr>
@@ -738,7 +741,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">DBA&lt;br&gt;&lt;br&gt;一枚&lt;br&gt;</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">DBA&lt;br&gt;一枚&lt;br&gt;</div>
   	  	
     	</section>
     
