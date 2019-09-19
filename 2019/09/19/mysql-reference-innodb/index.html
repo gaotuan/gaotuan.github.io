@@ -6,20 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>sql优化--避免相关子查询 | gtt-博客</title>
+  <title>mysql reference innodb | gtt-博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="注释： 以下sql中a表是大表  b表是小表 a表和b表的结构是一样的，id为主键，modify_time上有索引  原始sql：12345UPDATE video_recognition_record_2017_08 a SET a.flag=1WHERE exists    (SELECT 1    FROM video_recognition_record_increment b    WH">
-<meta name="keywords" content="mysql,sql优化">
+  <meta name="description" content="InnoDB Architecture: Change Buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which">
+<meta name="keywords" content="mysql,reference">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sql优化--避免相关子查询">
-<meta property="og:url" content="http://yoursite.com/2019/09/19/sql优化-避免相关子查询/index.html">
+<meta property="og:title" content="mysql reference innodb">
+<meta property="og:url" content="http://yoursite.com/2019/09/19/mysql-reference-innodb/index.html">
 <meta property="og:site_name" content="gtt-博客">
-<meta property="og:description" content="注释： 以下sql中a表是大表  b表是小表 a表和b表的结构是一样的，id为主键，modify_time上有索引  原始sql：12345UPDATE video_recognition_record_2017_08 a SET a.flag=1WHERE exists    (SELECT 1    FROM video_recognition_record_increment b    WH">
+<meta property="og:description" content="InnoDB Architecture: Change Buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-19T12:29:19.576Z">
+<meta property="og:image" content="http://yoursite.com/images/innodb_arch.png">
+<meta property="og:updated_time" content="2019-09-19T12:27:05.390Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sql优化--避免相关子查询">
-<meta name="twitter:description" content="注释： 以下sql中a表是大表  b表是小表 a表和b表的结构是一样的，id为主键，modify_time上有索引  原始sql：12345UPDATE video_recognition_record_2017_08 a SET a.flag=1WHERE exists    (SELECT 1    FROM video_recognition_record_increment b    WH">
+<meta name="twitter:title" content="mysql reference innodb">
+<meta name="twitter:description" content="InnoDB Architecture: Change Buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which">
+<meta name="twitter:image" content="http://yoursite.com/images/innodb_arch.png">
   
     <link rel="alternative" href="/atom.xml" title="gtt-博客" type="application/atom+xml">
   
@@ -177,191 +179,30 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-sql优化-避免相关子查询" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mysql-reference-innodb" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      sql优化--避免相关子查询
+      mysql reference innodb
     </h1>
   
 
         
-        <a href="/2019/09/19/sql优化-避免相关子查询/" class="archive-article-date">
-  	<time datetime="2019-09-19T03:35:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
+        <a href="/2019/09/19/mysql-reference-innodb/" class="archive-article-date">
+  	<time datetime="2019-09-19T11:49:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="注释："><a href="#注释：" class="headerlink" title="注释："></a>注释：</h3><ul>
-<li>以下sql中a表是大表  b表是小表</li>
-<li>a表和b表的结构是一样的，id为主键，modify_time上有索引</li>
-</ul>
-<h4 id="原始sql："><a href="#原始sql：" class="headerlink" title="原始sql："></a>原始sql：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">exists</span></span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">FROM</span> video_recognition_record_increment b</span><br><span class="line">    <span class="keyword">WHERE</span> b.id=a.id <span class="keyword">and</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)));</span><br></pre></td></tr></table></figure>
-
-<h4 id="执行计划："><a href="#执行计划：" class="headerlink" title="执行计划："></a>执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>index</td>
-<td>NULL</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>NULL</td>
-<td>221094212</td>
-<td>100.00</td>
-<td>Using where</td>
-</tr>
-<tr>
-<td>2</td>
-<td>DEPENDENT SUBQUERY</td>
-<td>b</td>
-<td>NULL</td>
-<td>eq_ref</td>
-<td>PRIMARY,i_modifytime</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>xiaoying_videoreview.a.id</td>
-<td>1</td>
-<td>39.21</td>
-<td>Using where</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><code>该执行计划 对a表的主键全扫描，然后根据a表主键的值 去判断是否在b表中</code>  </p>
-</blockquote>
-<hr>
-<h4 id="用in改写："><a href="#用in改写：" class="headerlink" title="用in改写："></a>用in改写：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> </span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="keyword">id</span></span><br><span class="line">    <span class="keyword">FROM</span> video_recognition_record_increment b</span><br><span class="line">    <span class="keyword">WHERE</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)));</span><br></pre></td></tr></table></figure>
-
-<h4 id="in改写后的执行计划："><a href="#in改写后的执行计划：" class="headerlink" title="in改写后的执行计划："></a>in改写后的执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>index</td>
-<td>NULL</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>NULL</td>
-<td>221099786</td>
-<td>100.00</td>
-<td>Using where</td>
-</tr>
-<tr>
-<td>2</td>
-<td>DEPENDENT SUBQUERY</td>
-<td>b</td>
-<td>NULL</td>
-<td>unique_subquery</td>
-<td>PRIMARY,i_modifytime</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>func</td>
-<td>1</td>
-<td>39.18</td>
-<td>Using where</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><code>该执行计划 也是对a表的主键全扫描，然后根据a表主键的值 去判断是否在b表中</code></p>
-</blockquote>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">由于我们知道 b是小表，所以应该让b表做**驱动表**去关联a表</span><br><span class="line">目前的mysql版本对子查询（in 或者exists）的优化有一定的弊端`s</span><br></pre></td></tr></table></figure>
-
-<h4 id="最终优化后的sql："><a href="#最终优化后的sql：" class="headerlink" title="最终优化后的sql："></a>最终优化后的sql：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a  <span class="keyword">join</span>  video_recognition_record_increment b <span class="keyword">on</span> a.id=b.id <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">where</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)) ;</span><br></pre></td></tr></table></figure>
-
-<h4 id="执行计划：-1"><a href="#执行计划：-1" class="headerlink" title="执行计划："></a>执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>SIMPLE</td>
-<td>b</td>
-<td>NULL</td>
-<td>range</td>
-<td>PRIMARY,i_modifytime</td>
-<td>i_modifytime</td>
-<td>5</td>
-<td>NULL</td>
-<td>3491248</td>
-<td>100.00</td>
-<td>Using where; Using index</td>
-</tr>
-<tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>eq_ref</td>
-<td>PRIMARY</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>xiaoying_videoreview.b.id</td>
-<td>1</td>
-<td>100.00</td>
-<td>NULL</td>
-</tr>
-</tbody></table>
-<blockquote>
-<ul>
-<li>该执行计划 利用b表上的索引字段做范围扫描，b表是驱动板，然后根据b表中id的值去判断是否在a表中，同时用到了索引覆盖</li>
-<li>这才是我们想要的执行计划</li>
-</ul>
-</blockquote>
-
+        <h3 id="InnoDB-Architecture"><a href="#InnoDB-Architecture" class="headerlink" title="InnoDB Architecture:"></a>InnoDB Architecture:</h3><p><img src="/images/innodb_arch.png" alt></p>
+<h2 id="Change-Buffer"><a href="#Change-Buffer" class="headerlink" title="Change Buffer:"></a>Change Buffer:</h2><p> the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which may result from INSERT, UPDATE, or DELETE operations (DML), are merged later when the pages are loaded into the buffer pool by other read operations.</p>
+<h2 id="Adaptive-Hash-Index"><a href="#Adaptive-Hash-Index" class="headerlink" title="Adaptive Hash Index:"></a>Adaptive Hash Index:</h2><p>Hash indexes are built on demand for the pages of the index that are accessed often<br>If InnoDB notices that queries could benefit from building a hash index, it does so automatically.<br> Queries with LIKE operators and % wildcards also tend not to benefit</p>
+<h3 id="Log-Buffer"><a href="#Log-Buffer" class="headerlink" title="Log Buffer:"></a>Log Buffer:</h3><h2 id="InnoDB-On-Disk-Structures"><a href="#InnoDB-On-Disk-Structures" class="headerlink" title="InnoDB On-Disk Structures:"></a>InnoDB On-Disk Structures:</h2>
       
 
       
@@ -405,7 +246,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">mysql,sql优化</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql,reference</a>
         		</li>
       		
 		</ul>
@@ -461,7 +302,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/19/sql优化-避免相关子查询/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/19/mysql-reference-innodb/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -475,18 +316,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/09/19/mysql-reference-innodb/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          mysql reference innodb
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/09/18/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/2019/09/19/sql优化-避免相关子查询/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">sql优化--避免相关子查询</div>
       <i class="icon-circle-right"></i>
     </a>
   
