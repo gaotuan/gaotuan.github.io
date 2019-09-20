@@ -17,7 +17,7 @@
 <meta property="og:description" content="InnoDB Architecture: Change Buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/innodb_arch.png">
-<meta property="og:updated_time" content="2019-09-19T12:27:05.390Z">
+<meta property="og:updated_time" content="2019-09-20T09:49:13.470Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql reference innodb">
 <meta name="twitter:description" content="InnoDB Architecture: Change Buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which">
@@ -200,9 +200,77 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="InnoDB-Architecture"><a href="#InnoDB-Architecture" class="headerlink" title="InnoDB Architecture:"></a>InnoDB Architecture:</h3><p><img src="/images/innodb_arch.png" alt></p>
-<h2 id="Change-Buffer"><a href="#Change-Buffer" class="headerlink" title="Change Buffer:"></a>Change Buffer:</h2><p> the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which may result from INSERT, UPDATE, or DELETE operations (DML), are merged later when the pages are loaded into the buffer pool by other read operations.</p>
-<h2 id="Adaptive-Hash-Index"><a href="#Adaptive-Hash-Index" class="headerlink" title="Adaptive Hash Index:"></a>Adaptive Hash Index:</h2><p>Hash indexes are built on demand for the pages of the index that are accessed often<br>If InnoDB notices that queries could benefit from building a hash index, it does so automatically.<br> Queries with LIKE operators and % wildcards also tend not to benefit</p>
-<h3 id="Log-Buffer"><a href="#Log-Buffer" class="headerlink" title="Log Buffer:"></a>Log Buffer:</h3><h2 id="InnoDB-On-Disk-Structures"><a href="#InnoDB-On-Disk-Structures" class="headerlink" title="InnoDB On-Disk Structures:"></a>InnoDB On-Disk Structures:</h2>
+<h4 id="Change-Buffer"><a href="#Change-Buffer" class="headerlink" title="Change Buffer:"></a>Change Buffer:</h4><p> the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which may result from INSERT, UPDATE, or DELETE operations (DML), are merged later when the pages are loaded into the buffer pool by other read operations.</p>
+<h4 id="Adaptive-Hash-Index"><a href="#Adaptive-Hash-Index" class="headerlink" title="Adaptive Hash Index:"></a>Adaptive Hash Index:</h4><ul>
+<li>Hash indexes are built on demand for the pages of the index that are accessed often  </li>
+<li>If InnoDB notices that queries could benefit from building a hash index, it does so automatically.  </li>
+<li>Queries with LIKE operators and % wildcards also tend not to benefit<h4 id="Log-Buffer"><a href="#Log-Buffer" class="headerlink" title="Log Buffer:"></a>Log Buffer:</h4></li>
+</ul>
+<h4 id="InnoDB-On-Disk-Structures"><a href="#InnoDB-On-Disk-Structures" class="headerlink" title="InnoDB On-Disk Structures:"></a>InnoDB On-Disk Structures:</h4><ul>
+<li>In the case of a runaway rollback, if you do not have valuable data in your database, it may be advisable to kill the database process rather than wait for millions of disk I/O operations to complete. For the complete procedure, see Section 14.21.2, “Forcing InnoDB Recovery”.  </li>
+<li>InnoDB tables require more disk space than MyISAM tables  </li>
+</ul>
+<h4 id="AUTO-INCREMENT-Handling-in-InnoDB"><a href="#AUTO-INCREMENT-Handling-in-InnoDB" class="headerlink" title="AUTO_INCREMENT Handling in InnoDB:"></a>AUTO_INCREMENT Handling in InnoDB:</h4><ul>
+<li>an AUTO_INCREMENT column must be defined as part of an index such that it is possible to perform the equivalent of an indexed SELECT MAX(ai_col) lookup on the table to obtain the maximum column value</li>
+</ul>
+<h4 id="InnoDB-AUTO-INCREMENT-Counter-Initialization："><a href="#InnoDB-AUTO-INCREMENT-Counter-Initialization：" class="headerlink" title="InnoDB AUTO_INCREMENT Counter Initialization："></a>InnoDB AUTO_INCREMENT Counter Initialization：</h4><ul>
+<li><p>This counter is stored only in main memory, not on disk</p>
+</li>
+<li><p>InnoDB executes the equivalent of the following statement on the first insert into a table containing an AUTO_INCREMENT column. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT MAX(ai_col) FROM table_name FOR UPDATE;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>If a SHOW TABLE STATUS statement examines the table before the auto-increment counter is initialized, InnoDB initializes but does not increment the value</p>
+</li>
+<li><p>After the auto-increment counter has been initialized, if you do not explicitly specify a value for an AUTO_INCREMENT column, InnoDB increments the counter and assigns the new value to the column. If you insert a row that explicitly specifies the column value, and the value is greater than the current counter value, the counter is set to the specified column value.</p>
+</li>
+<li><p>InnoDB uses the in-memory auto-increment counter as long as the server runs. When the server is stopped and restarted, InnoDB reinitializes the counter for each table for the first INSERT to the table, as described earlier.</p>
+</li>
+</ul>
+<h4 id="Limits-on-InnoDB-Tables"><a href="#Limits-on-InnoDB-Tables" class="headerlink" title="Limits on InnoDB Tables:"></a>Limits on InnoDB Tables:</h4><ul>
+<li>A table can contain a maximum of 1017 columns. Virtual generated columns are included in this limit.</li>
+<li>A table can contain a maximum of 64 secondary indexes.</li>
+<li>If innodb_large_prefix is enabled (the default), the index key prefix limit is 3072 bytes for InnoDB tables that use DYNAMIC or COMPRESSED row format. If innodb_large_prefix is disabled, the index key prefix limit is 767 bytes for tables of any row format.</li>
+<li>A maximum of 16 columns is permitted for multicolumn indexes</li>
+<li>The maximum row length, except for variable-length columns (VARBINARY, VARCHAR, BLOB and TEXT), is slightly less than half of a page. LONGBLOB and LONGTEXT columns must be less than 4GB,</li>
+<li>Although InnoDB supports row sizes larger than 65,535 bytes internally, MySQL itself imposes a row-size limit of 65,535 for the combined size of all columns</li>
+<li>The internal representation of a MySQL table has a maximum row size limit of 65,535 bytes, even if the storage engine is capable of supporting larger rows. BLOB and TEXT columns only contribute 9 to 12 bytes toward the row size limit because their contents are stored separately from the rest of the row.</li>
+<li>On some older operating systems, files must be less than 2GB. This is not a limitation of InnoDB itself, but if you require a large tablespace, configure it using several smaller data files rather than one large data file.</li>
+<li>The combined size of the InnoDB log files can be up to 512GB.</li>
+<li>The minimum tablespace size is slightly larger than 10MB. The maximum tablespace size depends on the InnoDB page size.<table>
+<thead>
+<tr>
+<th>InnoDB Page Size</th>
+<th>Maximum Tablespace Size</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4KB</td>
+<td>16TB</td>
+</tr>
+<tr>
+<td>8KB</td>
+<td>32TB</td>
+</tr>
+<tr>
+<td>16KB</td>
+<td>64TB</td>
+</tr>
+<tr>
+<td>32KB</td>
+<td>128TB</td>
+</tr>
+<tr>
+<td>64KB</td>
+<td>256TB</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p><code>The maximum tablespace size is also the maximum size for a table</code></p>
+<ul>
+<li>Tablespace files cannot exceed 4GB on Windows 32-bit systems</li>
+</ul>
+
       
 
       
@@ -316,6 +384,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2019/09/20/defining-a-primary-key-for-each-table-0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          defining a primary key for each table
+        
+      </div>
+    </a>
+  
   
     <a href="/2019/09/19/sql优化-避免相关子查询/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">sql优化--避免相关子查询</div>
@@ -382,7 +459,7 @@
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: true
+		showTags: false
 	}
 </script>
 
@@ -444,7 +521,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql,reference</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -452,7 +529,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql,reference</a>
               </li>
             
             <div class="clearfix"></div>
