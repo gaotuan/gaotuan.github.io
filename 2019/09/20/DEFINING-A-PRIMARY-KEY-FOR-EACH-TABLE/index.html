@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>DEFINING A PRIMARY KEY FOR EACH TABLE | gtt-博客</title>
+  <title>defining a primary key for each table | gtt-博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Defining a PRIMARY KEY for Each Table: The PRIMARY KEY clause is a critical factor affecting the performance of MySQL queries and the space usage for tables and indexes. The primary key uniquely ident">
 <meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="DEFINING A PRIMARY KEY FOR EACH TABLE">
-<meta property="og:url" content="http://yoursite.com/2019/09/20/DEFINING-A-PRIMARY-KEY-FOR-EACH-TABLE/index.html">
+<meta property="og:title" content="defining a primary key for each table">
+<meta property="og:url" content="http://yoursite.com/2019/09/20/defining-a-primary-key-for-each-table/index.html">
 <meta property="og:site_name" content="gtt-博客">
 <meta property="og:description" content="Defining a PRIMARY KEY for Each Table: The PRIMARY KEY clause is a critical factor affecting the performance of MySQL queries and the space usage for tables and indexes. The primary key uniquely ident">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-20T06:31:04.127Z">
+<meta property="og:updated_time" content="2019-09-20T10:05:24.645Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="DEFINING A PRIMARY KEY FOR EACH TABLE">
+<meta name="twitter:title" content="defining a primary key for each table">
 <meta name="twitter:description" content="Defining a PRIMARY KEY for Each Table: The PRIMARY KEY clause is a critical factor affecting the performance of MySQL queries and the space usage for tables and indexes. The primary key uniquely ident">
   
     <link rel="alternative" href="/atom.xml" title="gtt-博客" type="application/atom+xml">
@@ -177,20 +177,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-DEFINING-A-PRIMARY-KEY-FOR-EACH-TABLE" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-defining-a-primary-key-for-each-table" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      DEFINING A PRIMARY KEY FOR EACH TABLE
+      defining a primary key for each table
     </h1>
   
 
         
-        <a href="/2019/09/20/DEFINING-A-PRIMARY-KEY-FOR-EACH-TABLE/" class="archive-article-date">
-  	<time datetime="2019-09-20T06:30:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-20</time>
+        <a href="/2019/09/20/defining-a-primary-key-for-each-table/" class="archive-article-date">
+  	<time datetime="2019-09-20T09:57:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-20</time>
 </a>
         
       </header>
@@ -204,8 +204,9 @@
 <li>Declare the PRIMARY KEY clause in the original CREATE TABLE statement, rather than adding it later through an ALTER TABLE statement.  </li>
 <li>Choose the column and its data type carefully. Prefer numeric columns over character or string ones.  </li>
 <li>Consider using an auto-increment column if there is not another stable, unique, non-null, numeric column to use.  </li>
-<li>An auto-increment column is also a good choice if there is any doubt whether the value of the primary key column could ever change. Changing the value of a primary key column is an expensive operation, possibly involving rearranging data within the table and within each secondary index.<br>Consider adding a primary key to any table that does not already have one. <strong>Use the smallest practical numeric type based on the maximum projected size of the table.</strong> <strong><em>This can make each row slightly more compact, which can yield substantial space savings for large tables. The space savings are multiplied if the table has any secondary indexes, because the primary key value is repeated in each secondary index entry</em></strong>. <em>In addition to reducing data size on disk, a small primary key also lets more data fit into the buffer pool, speeding up all kinds of operations and improving concurrency.</em></li>
+<li>An auto-increment column is also a good choice if there is any doubt whether the value of the primary key column could ever change. Changing the value of a primary key column is an expensive operation, possibly involving rearranging data within the table and within each secondary index.    </li>
 </ul>
+<p>Consider adding a primary key to any table that does not already have one. <strong>Use the smallest practical numeric type based on the maximum projected size of the table.</strong> <strong><em>This can make each row slightly more compact, which can yield substantial space savings for large tables. The space savings are multiplied if the table has any secondary indexes, because the primary key value is repeated in each secondary index entry</em></strong>. <em>In addition to reducing data size on disk, a small primary key also lets more data fit into the buffer pool, speeding up all kinds of operations and improving concurrency.</em></p>
 <p>If the table already has a primary key on some longer column, such as a VARCHAR, consider adding a new unsigned AUTO_INCREMENT column and switching the primary key to that, even if that column is not referenced in queries. This design change can produce substantial space savings in the secondary indexes. You can designate the former primary key columns as UNIQUE NOT NULL to enforce the same constraints as the PRIMARY KEY clause, that is, to prevent duplicate or null values across all those columns.</p>
 <p><strong>If you leave the PRIMARY KEY clause out entirely, MySQL creates an invisible one for you. It is a 6-byte value that might be longer than you need, thus wasting space. Because it is hidden, you cannot refer to it in queries.</strong></p>
 
@@ -308,7 +309,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/20/DEFINING-A-PRIMARY-KEY-FOR-EACH-TABLE/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/20/defining-a-primary-key-for-each-table/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -321,6 +322,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2019/09/20/limits-on-innodb-tables/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          limits on innodb tables
+        
+      </div>
+    </a>
   
   
     <a href="/2019/09/19/mysql-reference-innodb/" id="article-nav-older" class="article-nav-link-wrap">
@@ -388,7 +398,7 @@
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: true
+		showTags: false
 	}
 </script>
 
