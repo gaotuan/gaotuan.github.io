@@ -423,6 +423,16 @@
 <li><p>InnoDB uses the in-memory auto-increment counter as long as the server runs. When the server is stopped and restarted, InnoDB reinitializes the counter for each table for the first INSERT to the table, as described earlier.</p>
 </li>
 </ul>
+<h4 id="The-Physical-Structure-of-an-InnoDB-Index"><a href="#The-Physical-Structure-of-an-InnoDB-Index" class="headerlink" title="The Physical Structure of an InnoDB Index:"></a>The Physical Structure of an InnoDB Index:</h4><p>When new records are inserted into an InnoDB clustered index, InnoDB tries to leave 1/16 of the page free for future insertions and updates of the index records. If index records are inserted in a sequential order (ascending or descending), the resulting index pages are about 15/16 full. If records are inserted in a random order, the pages are from 1/2 to 15/16 full.</p>
+<h4 id="Full-Text-Index-Document-ID-and-FTS-DOC-ID-Column"><a href="#Full-Text-Index-Document-ID-and-FTS-DOC-ID-Column" class="headerlink" title="Full-Text Index Document ID and FTS_DOC_ID Column:"></a>Full-Text Index Document ID and FTS_DOC_ID Column:</h4><ul>
+<li>InnoDB uses a unique document identifier referred to as a Document ID (DOC_ID) to map words in the full-text index to document records where the word appears. The mapping requires an FTS_DOC_ID column on the indexed table. If an FTS_DOC_ID column is not defined, InnoDB automatically adds a hidden FTS_DOC_ID column when the full-text index is created</li>
+<li>To avoid rebuilding the table, the FTS_DOC_ID column is retained when dropping a full-text index</li>
+<li>To remove full-text index entries for deleted records, run OPTIMIZE TABLE on the indexed table with innodb_optimize_fulltext_only=ON to rebuild the full-text index </li>
+</ul>
+<h4 id="innodb-System-Tablespace"><a href="#innodb-System-Tablespace" class="headerlink" title="innodb System Tablespace:"></a>innodb System Tablespace:</h4><ul>
+<li>The system tablespace is the storage area for the InnoDB data dictionary, the doublewrite buffer, the change buffer, and undo logs. It may also contain table and index data if tables are created in the system tablespace rather than file-per-table or general tablespaces</li>
+<li>When a table is moved out of the system tablespace into its own .ibd file, the data files that make up the system tablespace remain the same size. The space formerly occupied by the table can be reused for new InnoDB data, but is not reclaimed for use by the operating system</li>
+</ul>
 
       
 
@@ -896,11 +906,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql,reference</a>
+                <a href="javascript:void(0)" class="js-tag color2">mysql,sql优化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">mysql,sql优化</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql,reference</a>
               </li>
             
             <div class="clearfix"></div>
