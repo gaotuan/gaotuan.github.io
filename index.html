@@ -194,7 +194,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p><strong>特 记录下 在使用mysql event中遇到的坑：</strong>  </p>
+<ol>
+<li>阿里云rds 5.6版本  定时任务执行的sql，用户无法通过 show processlist,查询information_schema.processlist视图 查询正在执行的sql<br><code>这个坑导致系统出问题时，排查不到正在执行的sql，从而定位不到问题</code></li>
+<li>mysql 慢sql 不记录定时任务执行过的慢sql</li>
+<li>mysql event中的慢sql，如果需要记录 可以开启general log，从general_log中查询</li>
+</ol>
+
       
 
       
@@ -202,6 +208,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       

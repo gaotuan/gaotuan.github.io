@@ -8,14 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>mysql event 遇到的坑 | gtt-博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
+  <meta name="description" content="特 记录下 在使用mysql event中遇到的坑：    阿里云rds 5.6版本  定时任务执行的sql，用户无法通过 show processlist,查询information_schema.processlist视图 查询正在执行的sql这个坑导致系统出问题时，排查不到正在执行的sql，从而定位不到问题 mysql 慢sql 不记录定时任务执行过的慢sql mysql event中的慢s">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
 <meta property="og:title" content="mysql event 遇到的坑">
 <meta property="og:url" content="http://yoursite.com/2019/09/26/mysql-event-遇到的坑/index.html">
 <meta property="og:site_name" content="gtt-博客">
+<meta property="og:description" content="特 记录下 在使用mysql event中遇到的坑：    阿里云rds 5.6版本  定时任务执行的sql，用户无法通过 show processlist,查询information_schema.processlist视图 查询正在执行的sql这个坑导致系统出问题时，排查不到正在执行的sql，从而定位不到问题 mysql 慢sql 不记录定时任务执行过的慢sql mysql event中的慢s">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-26T07:43:57.011Z">
+<meta property="og:updated_time" content="2019-09-26T07:55:43.734Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql event 遇到的坑">
+<meta name="twitter:description" content="特 记录下 在使用mysql event中遇到的坑：    阿里云rds 5.6版本  定时任务执行的sql，用户无法通过 show processlist,查询information_schema.processlist视图 查询正在执行的sql这个坑导致系统出问题时，排查不到正在执行的sql，从而定位不到问题 mysql 慢sql 不记录定时任务执行过的慢sql mysql event中的慢s">
   
     <link rel="alternative" href="/atom.xml" title="gtt-博客" type="application/atom+xml">
   
@@ -193,7 +197,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p><strong>特 记录下 在使用mysql event中遇到的坑：</strong>  </p>
+<ol>
+<li>阿里云rds 5.6版本  定时任务执行的sql，用户无法通过 show processlist,查询information_schema.processlist视图 查询正在执行的sql<br><code>这个坑导致系统出问题时，排查不到正在执行的sql，从而定位不到问题</code></li>
+<li>mysql 慢sql 不记录定时任务执行过的慢sql</li>
+<li>mysql event中的慢sql，如果需要记录 可以开启general log，从general_log中查询</li>
+</ol>
+
       
 
       
@@ -232,6 +242,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
