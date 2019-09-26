@@ -174,6 +174,68 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-event-遇到的坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/26/mysql-event-遇到的坑/">mysql event 遇到的坑</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/26/mysql-event-遇到的坑/" class="archive-article-date">
+  	<time datetime="2019-09-26T07:43:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/26/mysql-event-遇到的坑/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-limits-on-innodb-tables" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -396,42 +458,63 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="InnoDB-Architecture"><a href="#InnoDB-Architecture" class="headerlink" title="InnoDB Architecture:"></a>InnoDB Architecture:</h3><p><img src="/images/innodb_arch.png" alt></p>
-<h4 id="Change-Buffer"><a href="#Change-Buffer" class="headerlink" title="Change Buffer:"></a>Change Buffer:</h4><p> the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. The buffered changes, which may result from INSERT, UPDATE, or DELETE operations (DML), are merged later when the pages are loaded into the buffer pool by other read operations.</p>
-<h4 id="Adaptive-Hash-Index"><a href="#Adaptive-Hash-Index" class="headerlink" title="Adaptive Hash Index:"></a>Adaptive Hash Index:</h4><ul>
-<li>Hash indexes are built on demand for the pages of the index that are accessed often  </li>
-<li>If InnoDB notices that queries could benefit from building a hash index, it does so automatically.  </li>
-<li>Queries with LIKE operators and % wildcards also tend not to benefit<h4 id="Log-Buffer"><a href="#Log-Buffer" class="headerlink" title="Log Buffer:"></a>Log Buffer:</h4></li>
+        <h3 id="innodb-architecture"><a href="#innodb-architecture" class="headerlink" title="innodb architecture:"></a>innodb architecture:</h3><p><img src="/images/innodb_arch.png" alt></p>
+<h4 id="change-buffer"><a href="#change-buffer" class="headerlink" title="change buffer:"></a>change buffer:</h4><p> the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. the buffered changes, which may result from insert, update, or delete operations (dml), are merged later when the pages are loaded into the buffer pool by other read operations.</p>
+<h4 id="adaptive-hash-index"><a href="#adaptive-hash-index" class="headerlink" title="adaptive hash index:"></a>adaptive hash index:</h4><ul>
+<li>hash indexes are built on demand for the pages of the index that are accessed often  </li>
+<li>if innodb notices that queries could benefit from building a hash index, it does so automatically.  </li>
+<li>queries with like operators and % wildcards also tend not to benefit<h4 id="log-buffer"><a href="#log-buffer" class="headerlink" title="log buffer:"></a>log buffer:</h4></li>
 </ul>
-<h4 id="InnoDB-On-Disk-Structures"><a href="#InnoDB-On-Disk-Structures" class="headerlink" title="InnoDB On-Disk Structures:"></a>InnoDB On-Disk Structures:</h4><ul>
-<li>In the case of a runaway rollback, if you do not have valuable data in your database, it may be advisable to kill the database process rather than wait for millions of disk I/O operations to complete. For the complete procedure, see Section 14.21.2, “Forcing InnoDB Recovery”.  </li>
-<li>InnoDB tables require more disk space than MyISAM tables  </li>
+<h4 id="innodb-on-disk-structures"><a href="#innodb-on-disk-structures" class="headerlink" title="innodb on-disk structures:"></a>innodb on-disk structures:</h4><ul>
+<li>in the case of a runaway rollback, if you do not have valuable data in your database, it may be advisable to kill the database process rather than wait for millions of disk i/o operations to complete. for the complete procedure, see section 14.21.2, “forcing innodb recovery”.  </li>
+<li>innodb tables require more disk space than myisam tables  </li>
 </ul>
-<h4 id="AUTO-INCREMENT-Handling-in-InnoDB"><a href="#AUTO-INCREMENT-Handling-in-InnoDB" class="headerlink" title="AUTO_INCREMENT Handling in InnoDB:"></a>AUTO_INCREMENT Handling in InnoDB:</h4><ul>
-<li>an AUTO_INCREMENT column must be defined as part of an index such that it is possible to perform the equivalent of an indexed SELECT MAX(ai_col) lookup on the table to obtain the maximum column value</li>
+<h4 id="auto-increment-handling-in-innodb"><a href="#auto-increment-handling-in-innodb" class="headerlink" title="auto_increment handling in innodb:"></a>auto_increment handling in innodb:</h4><ul>
+<li>an auto_increment column must be defined as part of an index such that it is possible to perform the equivalent of an indexed select max(ai_col) lookup on the table to obtain the maximum column value</li>
 </ul>
-<h4 id="InnoDB-AUTO-INCREMENT-Counter-Initialization："><a href="#InnoDB-AUTO-INCREMENT-Counter-Initialization：" class="headerlink" title="InnoDB AUTO_INCREMENT Counter Initialization："></a>InnoDB AUTO_INCREMENT Counter Initialization：</h4><ul>
-<li><p>This counter is stored only in main memory, not on disk</p>
+<h4 id="innodb-auto-increment-counter-initialization："><a href="#innodb-auto-increment-counter-initialization：" class="headerlink" title="innodb auto_increment counter initialization："></a>innodb auto_increment counter initialization：</h4><ul>
+<li><p>this counter is stored only in main memory, not on disk</p>
 </li>
-<li><p>InnoDB executes the equivalent of the following statement on the first insert into a table containing an AUTO_INCREMENT column. </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT MAX(ai_col) FROM table_name FOR UPDATE;</span><br></pre></td></tr></table></figure>
+<li><p>innodb executes the equivalent of the following statement on the first insert into a table containing an auto_increment column. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select max(ai_col) from table_name for update;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>If a SHOW TABLE STATUS statement examines the table before the auto-increment counter is initialized, InnoDB initializes but does not increment the value</p>
+<li><p>if a show table status statement examines the table before the auto-increment counter is initialized, innodb initializes but does not increment the value</p>
 </li>
-<li><p>After the auto-increment counter has been initialized, if you do not explicitly specify a value for an AUTO_INCREMENT column, InnoDB increments the counter and assigns the new value to the column. If you insert a row that explicitly specifies the column value, and the value is greater than the current counter value, the counter is set to the specified column value.</p>
+<li><p>after the auto-increment counter has been initialized, if you do not explicitly specify a value for an auto_increment column, innodb increments the counter and assigns the new value to the column. if you insert a row that explicitly specifies the column value, and the value is greater than the current counter value, the counter is set to the specified column value.</p>
 </li>
-<li><p>InnoDB uses the in-memory auto-increment counter as long as the server runs. When the server is stopped and restarted, InnoDB reinitializes the counter for each table for the first INSERT to the table, as described earlier.</p>
+<li><p>innodb uses the in-memory auto-increment counter as long as the server runs. when the server is stopped and restarted, innodb reinitializes the counter for each table for the first insert to the table, as described earlier.</p>
 </li>
 </ul>
-<h4 id="The-Physical-Structure-of-an-InnoDB-Index"><a href="#The-Physical-Structure-of-an-InnoDB-Index" class="headerlink" title="The Physical Structure of an InnoDB Index:"></a>The Physical Structure of an InnoDB Index:</h4><p>When new records are inserted into an InnoDB clustered index, InnoDB tries to leave 1/16 of the page free for future insertions and updates of the index records. If index records are inserted in a sequential order (ascending or descending), the resulting index pages are about 15/16 full. If records are inserted in a random order, the pages are from 1/2 to 15/16 full.</p>
-<h4 id="Full-Text-Index-Document-ID-and-FTS-DOC-ID-Column"><a href="#Full-Text-Index-Document-ID-and-FTS-DOC-ID-Column" class="headerlink" title="Full-Text Index Document ID and FTS_DOC_ID Column:"></a>Full-Text Index Document ID and FTS_DOC_ID Column:</h4><ul>
-<li>InnoDB uses a unique document identifier referred to as a Document ID (DOC_ID) to map words in the full-text index to document records where the word appears. The mapping requires an FTS_DOC_ID column on the indexed table. If an FTS_DOC_ID column is not defined, InnoDB automatically adds a hidden FTS_DOC_ID column when the full-text index is created</li>
-<li>To avoid rebuilding the table, the FTS_DOC_ID column is retained when dropping a full-text index</li>
-<li>To remove full-text index entries for deleted records, run OPTIMIZE TABLE on the indexed table with innodb_optimize_fulltext_only=ON to rebuild the full-text index </li>
+<h4 id="the-physical-structure-of-an-innodb-index"><a href="#the-physical-structure-of-an-innodb-index" class="headerlink" title="the physical structure of an innodb index:"></a>the physical structure of an innodb index:</h4><p>when new records are inserted into an innodb clustered index, innodb tries to leave 1/16 of the page free for future insertions and updates of the index records. if index records are inserted in a sequential order (ascending or descending), the resulting index pages are about 15/16 full. if records are inserted in a random order, the pages are from 1/2 to 15/16 full.</p>
+<h4 id="full-text-index-document-id-and-fts-doc-id-column"><a href="#full-text-index-document-id-and-fts-doc-id-column" class="headerlink" title="full-text index document id and fts_doc_id column:"></a>full-text index document id and fts_doc_id column:</h4><ul>
+<li>innodb uses a unique document identifier referred to as a document id (doc_id) to map words in the full-text index to document records where the word appears. the mapping requires an fts_doc_id column on the indexed table. if an fts_doc_id column is not defined, innodb automatically adds a hidden fts_doc_id column when the full-text index is created</li>
+<li>to avoid rebuilding the table, the fts_doc_id column is retained when dropping a full-text index</li>
+<li>to remove full-text index entries for deleted records, run optimize table on the indexed table with innodb_optimize_fulltext_only=on to rebuild the full-text index </li>
 </ul>
-<h4 id="innodb-System-Tablespace"><a href="#innodb-System-Tablespace" class="headerlink" title="innodb System Tablespace:"></a>innodb System Tablespace:</h4><ul>
-<li>The system tablespace is the storage area for the InnoDB data dictionary, the doublewrite buffer, the change buffer, and undo logs. It may also contain table and index data if tables are created in the system tablespace rather than file-per-table or general tablespaces</li>
-<li>When a table is moved out of the system tablespace into its own .ibd file, the data files that make up the system tablespace remain the same size. The space formerly occupied by the table can be reused for new InnoDB data, but is not reclaimed for use by the operating system</li>
+<h4 id="innodb-system-tablespace"><a href="#innodb-system-tablespace" class="headerlink" title="innodb system tablespace:"></a>innodb system tablespace:</h4><ul>
+<li>the system tablespace is the storage area for the innodb data dictionary, the doublewrite buffer, the change buffer, and undo logs. it may also contain table and index data if tables are created in the system tablespace rather than file-per-table or general tablespaces</li>
+<li>when a table is moved out of the system tablespace into its own .ibd file, the data files that make up the system tablespace remain the same size. the space formerly occupied by the table can be reused for new innodb data, but is not reclaimed for use by the operating system</li>
+</ul>
+<h4 id="transportable-tablespace-internals"><a href="#transportable-tablespace-internals" class="headerlink" title="transportable tablespace internals:"></a>transportable tablespace internals:</h4><ul>
+<li><p>when alter table … discard tablespace is run on the destination instance:<br>the table is locked in x mode.<br>the tablespace is detached from the table.</p>
+</li>
+<li><p>when flush tables … for export is run on the source instance:<br>the table being flushed for export is locked in shared mode.<br>the purge coordinator thread is stopped.<br>dirty pages are synchronized to disk.<br>table metadata is written to the binary .cfg file.</p>
+</li>
+<li><p>when unlock tables is run on the source instance:<br>the binary .cfg file is deleted.<br>the shared lock on the table or tables being imported is released and the purge coordinator thread is restarted.</p>
+</li>
+<li><p>when alter table … import tablespace is run on the destination instance, the import algorithm performs the following operations for each tablespace being imported:<br>each tablespace page is checked for corruption.<br>the space id and log sequence numbers (lsns) on each page are updated<br>flags are validated and lsn updated for the header page.<br>btree pages are updated.<br>the page state is set to dirty so that it is written to disk.</p>
+</li>
+</ul>
+<h4 id="Undo-Logs"><a href="#Undo-Logs" class="headerlink" title="Undo Logs:"></a>Undo Logs:</h4><ul>
+<li>The number of transactions that a rollback segment supports depends on the number of undo slots in the rollback segment and the number of undo logs required by each transaction.</li>
+<li>A transaction is assigned up to four undo logs, one for each of the following operation types:<br>INSERT operations on user-defined tables<br>UPDATE and DELETE operations on user-defined tables<br>INSERT operations on user-defined temporary tables<br>UPDATE and DELETE operations on user-defined temporary tables</li>
+<li>When transactions perform operations on temporary tables, the number of concurrent read-write transactions that InnoDB is capable of supporting is constrained by the number of rollback segments allocated to the temporary tablespace, which is 32.</li>
+<li>A transaction can encounter a concurrent transaction limit error before reaching the number of concurrent read-write transactions that InnoDB is capable of supporting. This occurs when the rollback segment assigned to a transaction runs out of undo slots. In such cases, try rerunning the transaction.</li>
+<li>If each transaction performs either an INSERT or an UPDATE or DELETE operation, the number of concurrent read-write transactions that InnoDB is capable of supporting is:<br>(innodb_page_size / 16) * (innodb_rollback_segments - 32)</li>
+<li>If each transaction performs an INSERT and an UPDATE or DELETE operation, the number of concurrent read-write transactions that InnoDB is capable of supporting is:<br>(innodb_page_size / 16 / 2) * (innodb_rollback_segments - 32)</li>
+</ul>
+<h4 id="lock："><a href="#lock：" class="headerlink" title="lock："></a>lock：</h4><ul>
+<li>Intention locks do not block anything except full table requests (for example, LOCK TABLES … WRITE). The main purpose of intention locks is to show that someone is locking a row, or going to lock a row in the table.</li>
 </ul>
 
       
