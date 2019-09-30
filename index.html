@@ -532,6 +532,13 @@
 </ul>
 <h4 id="lock："><a href="#lock：" class="headerlink" title="lock："></a>lock：</h4><ul>
 <li>Intention locks do not block anything except full table requests (for example, LOCK TABLES … WRITE). The main purpose of intention locks is to show that someone is locking a row, or going to lock a row in the table.</li>
+<li>Gap locking is not needed for statements that lock rows using a unique index to search for a unique row.</li>
+<li>Gap locking can be disabled explicitly. This occurs if you change the transaction isolation level to READ COMMITTED or enable the innodb_locks_unsafe_for_binlog system variable </li>
+<li>A gap lock taken by one transaction does not prevent another transaction from taking a gap lock on the same gap. There is no difference between shared and exclusive gap locks. They do not conflict with each other, and they perform the same function.  </li>
+</ul>
+<h4 id="locking-read"><a href="#locking-read" class="headerlink" title="locking read:"></a>locking read:</h4><ul>
+<li>Locking reads are only possible when autocommit is disabled (either by beginning transaction with START TRANSACTION or by setting autocommit to 0.</li>
+<li></li>
 </ul>
 
       
@@ -1006,11 +1013,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">mysql,sql优化</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql,reference</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql,reference</a>
+                <a href="javascript:void(0)" class="js-tag color2">mysql,sql优化</a>
               </li>
             
             <div class="clearfix"></div>
