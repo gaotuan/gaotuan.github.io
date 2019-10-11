@@ -174,6 +174,80 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Online-DDL-Operations" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/11/Online-DDL-Operations/">Online DDL Operations</a>
+    </h1>
+  
+
+        
+        <a href="/2019/10/11/Online-DDL-Operations/" class="archive-article-date">
+  	<time datetime="2019-10-11T07:25:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Online-DDL-Operations"><a href="#Online-DDL-Operations" class="headerlink" title="Online DDL Operations"></a>Online DDL Operations</h2><h4 id="online-DDL-Support-for-Index-Operations"><a href="#online-DDL-Support-for-Index-Operations" class="headerlink" title="online DDL Support for Index Operations:"></a>online DDL Support for Index Operations:</h4><p>Operation    |In Place    |Rebuilds Table    |Permits Concurrent DML|    Only Modifies Metadata<br>|–|–|–|<br>Creating or adding a secondary index    |Yes    |No    |Yes    |No<br>Dropping an index        |Yes     |No       |Yes    |Yes<br>Renaming an index        |Yes    |No       |Yes    |Yes<br>Adding a FULLTEXT index    |Yes*    |No*   |No    |No<br>Adding a SPATIAL index    |Yes    |No       |No    |No<br>Changing the index type    |Yes    |No       |Yes    |Yes</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/10/11/Online-DDL-Operations/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-mysql-event-遇到的坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -488,6 +562,7 @@
 </ul>
 <h4 id="auto-increment-handling-in-innodb"><a href="#auto-increment-handling-in-innodb" class="headerlink" title="auto_increment handling in innodb:"></a>auto_increment handling in innodb:</h4><ul>
 <li>an auto_increment column must be defined as part of an index such that it is possible to perform the equivalent of an indexed select max(ai_col) lookup on the table to obtain the maximum column value</li>
+<li>When a table is truncated, it is dropped and re-created in a new .ibd file, and the freed space is returned to the operating system</li>
 </ul>
 <h4 id="innodb-auto-increment-counter-initialization："><a href="#innodb-auto-increment-counter-initialization：" class="headerlink" title="innodb auto_increment counter initialization："></a>innodb auto_increment counter initialization：</h4><ul>
 <li><p>this counter is stored only in main memory, not on disk</p>
@@ -538,7 +613,9 @@
 </ul>
 <h4 id="locking-read"><a href="#locking-read" class="headerlink" title="locking read:"></a>locking read:</h4><ul>
 <li>Locking reads are only possible when autocommit is disabled (either by beginning transaction with START TRANSACTION or by setting autocommit to 0.</li>
-<li></li>
+</ul>
+<h3 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h3><ul>
+<li>Concurrent DML is not permitted when adding an auto-increment column. Data is reorganized substantially, making it an expensive operation. At a minimum, ALGORITHM=INPLACE, LOCK=SHARED is required.</li>
 </ul>
 
       
