@@ -17,7 +17,7 @@
 <meta property="og:description" content="innodb architecture: change buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. the buffered changes, which">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/innodb_arch.png">
-<meta property="og:updated_time" content="2019-10-11T06:53:28.442Z">
+<meta property="og:updated_time" content="2019-10-21T09:58:34.948Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql reference innodb">
 <meta name="twitter:description" content="innodb architecture: change buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. the buffered changes, which">
@@ -266,6 +266,8 @@
 </ul>
 <h3 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h3><ul>
 <li>Concurrent DML is not permitted when adding an auto-increment column. Data is reorganized substantially, making it an expensive operation. At a minimum, ALGORITHM=INPLACE, LOCK=SHARED is required.</li>
+<li>This difference is due to the fact that the cascading deletes are handled internally by the InnoDB storage engine, which means that none of the changes are logged.</li>
+<li>A lock wait timeout causes InnoDB to roll back only the single statement that was waiting for the lock and encountered the timeout. (To have the entire transaction roll back, start the server with the –innodb-rollback-on-timeout option.) </li>
 </ul>
 
       
