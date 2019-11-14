@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>gtt-博客</title>
+  <title>mysql 慢查询中的误区 | gtt-博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="gtt-博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="首先 看下慢查询日志： 12345# Time: 191114 19:39:57# User@Host: gaotuan[gaotuan] @ localhost []  Id:  3356# Query_time: 8.165084  Lock_time: 8.146073 Rows_sent: 0  Rows_examined: 1SET timestamp=1573731597;update">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql 慢查询中的误区">
+<meta property="og:url" content="http://yoursite.com/2019/11/14/mysql-慢查询中的误区/index.html">
 <meta property="og:site_name" content="gtt-博客">
+<meta property="og:description" content="首先 看下慢查询日志： 12345# Time: 191114 19:39:57# User@Host: gaotuan[gaotuan] @ localhost []  Id:  3356# Query_time: 8.165084  Lock_time: 8.146073 Rows_sent: 0  Rows_examined: 1SET timestamp=1573731597;update">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-11-14T12:11:32.010Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="gtt-博客">
+<meta name="twitter:title" content="mysql 慢查询中的误区">
+<meta name="twitter:description" content="首先 看下慢查询日志： 12345# Time: 191114 19:39:57# User@Host: gaotuan[gaotuan] @ localhost []  Id:  3356# Query_time: 8.165084  Lock_time: 8.146073 Rows_sent: 0  Rows_examined: 1SET timestamp=1573731597;update">
   
     <link rel="alternative" href="/atom.xml" title="gtt-博客" type="application/atom+xml">
   
@@ -172,16 +177,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-mysql-慢查询中的误区" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-mysql-慢查询中的误区" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/14/mysql-慢查询中的误区/">mysql 慢查询中的误区</a>
+    <h1 class="article-title" itemprop="name">
+      mysql 慢查询中的误区
     </h1>
   
 
@@ -202,193 +205,36 @@
       
 
       
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/11/14/mysql-慢查询中的误区/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/images/ali_money.png" style="width:200px;height:200px;">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/images/wx_money.png" style="width:200px;height:200px;">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-redis-batch-delete-keys" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/08/redis-batch-delete-keys/">redis batch delete keys</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/08/redis-batch-delete-keys/" class="archive-article-date">
-  	<time datetime="2019-11-08T09:25:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="python3脚本-批量删除key"><a href="#python3脚本-批量删除key" class="headerlink" title="python3脚本 批量删除key"></a>python3脚本 批量删除key</h4><html>
-
-<pre><code>#!/usr/bin/env python3
-import redis
-from datetime import datetime, timedelta
-import math
-nowtime = datetime.now().strftime(&quot;%Y%m%d %H:%M:%S&quot;)
-
-host=&apos;addr&apos;
-passwd=&apos;pass&apos;
-port=6379
-v_cnt=1000  #每次scan处理的size
-v_match=&apos;x:*:notice*:*read*&apos; #匹配模式
-
-def check_redis():
-    try:
-        r = redis.StrictRedis(host=host, port=port, password=passwd)
-        i = 0
-        c = 0
-        while True:
-            clas = r.scan(i, match=v_match, count=v_cnt)
-            i = clas[0]
-            keys = clas[1]
-            for ke in keys:
-                s=ke.decode()
-                #print(ke.decode())
-                r.delete(s)
-                c=c+1
-            if i == 0:
-                break
-        print(&quot;all--&gt;&gt;%d&quot; %(c))
-    except Exception as e:
-        print(&quot;Exception find:&quot;, e)
-
-
-if __name__ == &apos;__main__&apos;:
-    check_redis();</code></pre></html>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/11/08/redis-batch-delete-keys/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-performance-reference" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/31/mysql-performance-reference/">mysql-performance-reference</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/31/mysql-performance-reference/" class="archive-article-date">
-  	<time datetime="2019-10-31T03:06:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="note"><a href="#note" class="headerlink" title="note:"></a>note:</h4><ul>
-<li>Modifications to the setup_actors table affect only foreground threads created subsequent to the modification, not existing threads. To affect existing threads, modify the INSTRUMENTED and HISTORY columns of threads table rows.</li>
-<li>global_instrumentation is the highest level consumer. If global_instrumentation is NO, it disables global instrumentation. All other settings are lower level and are not checked; it does not matter what they are set to</li>
-<li>thread_instrumentation is checked only if global_instrumentation is YES</li>
-<li>If thread_instrumentation is YES, the Performance Schema maintains thread-specific information and also checks events_xxx_current consumers</li>
-</ul>
-
-      
-
       
     </div>
     <div class="article-info article-info-index">
@@ -408,16 +254,75 @@ if __name__ == &apos;__main__&apos;:
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/31/mysql-performance-reference/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/11/14/mysql-慢查询中的误区/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2019/11/08/redis-batch-delete-keys/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">redis batch delete keys</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -437,1327 +342,14 @@ if __name__ == &apos;__main__&apos;:
 
 
 
-
   
-    <article id="post-Online-DDL-Operations" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/11/Online-DDL-Operations/">online ddl operations</a>
-    </h1>
   
 
-        
-        <a href="/2019/10/11/Online-DDL-Operations/" class="archive-article-date">
-  	<time datetime="2019-10-11T07:25:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>Concurrent DML is not permitted when adding an auto-increment column. Data is reorganized substantially, making it an expensive operation. At a minimum, ALGORITHM=INPLACE, LOCK=SHARED is required.</li>
-<li>Changing the column data type is only supported with ALGORITHM=COPY</li>
-<li>In-place ALTER TABLE does not support increasing the size of a VARCHAR column from less than 256 bytes to a size equal to or greater than 256 bytes</li>
-<li>Decreasing VARCHAR size using in-place ALTER TABLE is not supported. Decreasing VARCHAR size requires a table copy (ALGORITHM=COPY).</li>
-<li>For DDL operations that modify table data, you can determine whether a DDL operation performs changes in place or performs a table copy by looking at the “rows affected” value displayed after the command finishes</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>operation</th>
-<th>in place</th>
-<th>rebuilds table</th>
-<th>permits concurrent dml</th>
-<th>only modifies metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>index operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>creating or adding a secondary index</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>dropping an index</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>renaming an index</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>adding a fulltext index</td>
-<td>yes*</td>
-<td>no*</td>
-<td><strong>no</strong></td>
-<td>no</td>
-</tr>
-<tr>
-<td>adding a spatial index</td>
-<td>yes</td>
-<td>no</td>
-<td><strong>no</strong></td>
-<td>no</td>
-</tr>
-<tr>
-<td>changing the index type</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>operation</th>
-<th>in place</th>
-<th>rebuilds table</th>
-<th>permits concurrent dml</th>
-<th>only modifies metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>primary key operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>adding a primary key</td>
-<td>yes*</td>
-<td>yes*</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>dropping a primary key</td>
-<td>no</td>
-<td>yes</td>
-<td><strong>no</strong></td>
-<td>no</td>
-</tr>
-<tr>
-<td>dropping a primary key and adding another</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>operation</th>
-<th>in place</th>
-<th>rebuilds table</th>
-<th>permits concurrent dml</th>
-<th>only modifies metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>column operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>adding a column</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes*</td>
-<td>no</td>
-</tr>
-<tr>
-<td>dropping a column</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>renaming a column</td>
-<td>yes</td>
-<td>no</td>
-<td>yes*</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>reordering columns</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>setting a column default value</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>changing the column data type</td>
-<td>no</td>
-<td>yes</td>
-<td><strong>no</strong></td>
-<td>no</td>
-</tr>
-<tr>
-<td>extending varchar column size</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>dropping the column default value</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>changing the auto-increment value</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>no*</td>
-</tr>
-<tr>
-<td>making a column null</td>
-<td>yes</td>
-<td>yes*</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>making a column not null</td>
-<td>yes*</td>
-<td>yes*</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>modifying the definition of an enum or set column</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>In Place</th>
-<th>Rebuilds Table</th>
-<th>Permits Concurrent DML</th>
-<th>Only Modifies Metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Generated Column Operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Adding a STORED column</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Modifying STORED column order</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Dropping a STORED column</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Adding a VIRTUAL column</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Modifying VIRTUAL column order</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Dropping a VIRTUAL column</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>In Place</th>
-<th>Rebuilds Table</th>
-<th>Permits Concurrent DML</th>
-<th>Only Modifies Metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Foreign Key Operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Adding a foreign key constraint</td>
-<td>Yes*</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Dropping a foreign key constraint</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>In Place</th>
-<th>Rebuilds Table</th>
-<th>Permits Concurrent DML</th>
-<th>Only Modifies Metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Table Operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Changing the ROW_FORMAT</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Changing the KEY_BLOCK_SIZE</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Setting persistent table statistics</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Specifying a character set</td>
-<td>Yes</td>
-<td>Yes*</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Converting a character set</td>
-<td>No</td>
-<td>Yes*</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Optimizing a table</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Rebuilding with the FORCE option</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Performing a null rebuild</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Renaming a table</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>Partitioning Clause</th>
-<th>In Place</th>
-<th>Permits DML</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Partitioning Operations</code></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>PARTITION BY</td>
-<td>No</td>
-<td>No</td>
-<td>Permits ALGORITHM=COPY, LOCK={DEFAULT</td>
-</tr>
-<tr>
-<td>ADD PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Does not copy existing data for tables partitioned by RANGE or LIST. Concurrent queries are permitted for tables partitioned by HASH or LIST. MySQL copies the data while holding a shared lock.</td>
-</tr>
-<tr>
-<td>DROP PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Does not copy existing data for tables partitioned by RANGE or LIST.</td>
-</tr>
-<tr>
-<td>DISCARD PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT</td>
-</tr>
-<tr>
-<td>IMPORT PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT</td>
-</tr>
-<tr>
-<td>TRUNCATE PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Does not copy existing data. It merely deletes rows; it does not alter the definition of the table itself, or of any of its partitions.</td>
-</tr>
-<tr>
-<td>COALESCE PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by HASH or LIST, as MySQL copies the data while holding a shared lock.</td>
-</tr>
-<tr>
-<td>REORGANIZE PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by LINEAR HASH or LIST. MySQL copies data from affected partitions while holding a shared metadata lock.</td>
-</tr>
-<tr>
-<td>EXCHANGE PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td>ANALYZE PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td>CHECK PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td>OPTIMIZE PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>ALGORITHM and LOCK clauses are ignored. Rebuilds the entire table. See Section 22.3.4, “Maintenance of Partitions”.</td>
-</tr>
-<tr>
-<td>REBUILD PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by LINEAR HASH or LIST. MySQL copies data from affected partitions while holding a shared metadata lock.</td>
-</tr>
-<tr>
-<td>REPAIR PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td>REMOVE PARTITIONING</td>
-<td>No</td>
-<td>No</td>
-<td>Permits ALGORITHM=COPY, LOCK={DEFAULT</td>
-</tr>
-</tbody></table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/11/Online-DDL-Operations/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-event-遇到的坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/26/mysql-event-遇到的坑/">mysql event 遇到的坑</a>
-    </h1>
   
 
-        
-        <a href="/2019/09/26/mysql-event-遇到的坑/" class="archive-article-date">
-  	<time datetime="2019-09-26T07:43:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>特 记录下 在使用mysql event中遇到的坑：</strong>  </p>
-<ol>
-<li>阿里云rds 5.6版本  定时任务执行的sql，用户无法通过 show processlist,查询information_schema.processlist视图 查询正在执行的sql<br><code>这个坑导致系统出问题时，排查不到正在执行的sql，从而定位不到问题</code></li>
-<li>mysql 慢sql 不记录定时任务执行过的慢sql</li>
-<li>mysql event中的慢sql，如果需要记录 可以开启general log，从general_log中查询</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/26/mysql-event-遇到的坑/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-limits-on-innodb-tables" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/20/limits-on-innodb-tables/">limits on innodb tables</a>
-    </h1>
   
 
-        
-        <a href="/2019/09/20/limits-on-innodb-tables/" class="archive-article-date">
-  	<time datetime="2019-09-20T09:59:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Limits-on-InnoDB-Tables"><a href="#Limits-on-InnoDB-Tables" class="headerlink" title="Limits on InnoDB Tables:"></a>Limits on InnoDB Tables:</h4><ul>
-<li>A table can contain a maximum of 1017 columns. Virtual generated columns are included in this limit.</li>
-<li>A table can contain a maximum of 64 secondary indexes.</li>
-<li>If innodb_large_prefix is enabled (the default), the index key prefix limit is 3072 bytes for InnoDB tables that use DYNAMIC or COMPRESSED row format. If innodb_large_prefix is disabled, the index key prefix limit is 767 bytes for tables of any row format.</li>
-<li>A maximum of 16 columns is permitted for multicolumn indexes</li>
-<li>The maximum row length, except for variable-length columns (VARBINARY, VARCHAR, BLOB and TEXT), is slightly less than half of a page. LONGBLOB and LONGTEXT columns must be less than 4GB,</li>
-<li>Although InnoDB supports row sizes larger than 65,535 bytes internally, MySQL itself imposes a row-size limit of 65,535 for the combined size of all columns</li>
-<li>The internal representation of a MySQL table has a maximum row size limit of 65,535 bytes, even if the storage engine is capable of supporting larger rows. BLOB and TEXT columns only contribute 9 to 12 bytes toward the row size limit because their contents are stored separately from the rest of the row.</li>
-<li>On some older operating systems, files must be less than 2GB. This is not a limitation of InnoDB itself, but if you require a large tablespace, configure it using several smaller data files rather than one large data file.</li>
-<li>The combined size of the InnoDB log files can be up to 512GB.</li>
-<li>The minimum tablespace size is slightly larger than 10MB. The maximum tablespace size depends on the InnoDB page size.<table>
-<thead>
-<tr>
-<th>InnoDB Page Size</th>
-<th>Maximum Tablespace Size</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>4KB</td>
-<td>16TB</td>
-</tr>
-<tr>
-<td>8KB</td>
-<td>32TB</td>
-</tr>
-<tr>
-<td>16KB</td>
-<td>64TB</td>
-</tr>
-<tr>
-<td>32KB</td>
-<td>128TB</td>
-</tr>
-<tr>
-<td>64KB</td>
-<td>256TB</td>
-</tr>
-</tbody></table>
-</li>
-</ul>
-<p><code>The maximum tablespace size is also the maximum size for a table</code></p>
-<ul>
-<li>Tablespace files cannot exceed 4GB on Windows 32-bit systems</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/20/limits-on-innodb-tables/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-defining-a-primary-key-for-each-table" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/20/defining-a-primary-key-for-each-table/">defining a primary key for each table</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/20/defining-a-primary-key-for-each-table/" class="archive-article-date">
-  	<time datetime="2019-09-20T09:57:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Defining-a-PRIMARY-KEY-for-Each-Table"><a href="#Defining-a-PRIMARY-KEY-for-Each-Table" class="headerlink" title="Defining a PRIMARY KEY for Each Table:"></a>Defining a PRIMARY KEY for Each Table:</h4><ul>
-<li>The PRIMARY KEY clause is a critical factor affecting the performance of MySQL queries and the space usage for tables and indexes. The primary key uniquely identifies a row in a table. Every row in the table must have a primary key value, and no two rows can have the same primary key value.  </li>
-<li>These are guidelines for the primary key, followed by more detailed explanations.  </li>
-<li>Declare a PRIMARY KEY for each table. Typically, it is the most important column that you refer to in WHERE clauses when looking up a single row.  </li>
-<li>Declare the PRIMARY KEY clause in the original CREATE TABLE statement, rather than adding it later through an ALTER TABLE statement.  </li>
-<li>Choose the column and its data type carefully. Prefer numeric columns over character or string ones.  </li>
-<li>Consider using an auto-increment column if there is not another stable, unique, non-null, numeric column to use.  </li>
-<li>An auto-increment column is also a good choice if there is any doubt whether the value of the primary key column could ever change. Changing the value of a primary key column is an expensive operation, possibly involving rearranging data within the table and within each secondary index.    </li>
-</ul>
-<p>Consider adding a primary key to any table that does not already have one. <strong>Use the smallest practical numeric type based on the maximum projected size of the table.</strong> <strong><em>This can make each row slightly more compact, which can yield substantial space savings for large tables. The space savings are multiplied if the table has any secondary indexes, because the primary key value is repeated in each secondary index entry</em></strong>. <em>In addition to reducing data size on disk, a small primary key also lets more data fit into the buffer pool, speeding up all kinds of operations and improving concurrency.</em></p>
-<p>If the table already has a primary key on some longer column, such as a VARCHAR, consider adding a new unsigned AUTO_INCREMENT column and switching the primary key to that, even if that column is not referenced in queries. This design change can produce substantial space savings in the secondary indexes. You can designate the former primary key columns as UNIQUE NOT NULL to enforce the same constraints as the PRIMARY KEY clause, that is, to prevent duplicate or null values across all those columns.</p>
-<p><strong>If you leave the PRIMARY KEY clause out entirely, MySQL creates an invisible one for you. It is a 6-byte value that might be longer than you need, thus wasting space. Because it is hidden, you cannot refer to it in queries.</strong></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/20/defining-a-primary-key-for-each-table/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-reference-innodb" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/19/mysql-reference-innodb/">mysql reference innodb</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/19/mysql-reference-innodb/" class="archive-article-date">
-  	<time datetime="2019-09-19T11:49:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="innodb-architecture"><a href="#innodb-architecture" class="headerlink" title="innodb architecture:"></a>innodb architecture:</h3><p><img src="/images/innodb_arch.png" alt></p>
-<h4 id="change-buffer"><a href="#change-buffer" class="headerlink" title="change buffer:"></a>change buffer:</h4><p> the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. the buffered changes, which may result from insert, update, or delete operations (dml), are merged later when the pages are loaded into the buffer pool by other read operations.</p>
-<h4 id="adaptive-hash-index"><a href="#adaptive-hash-index" class="headerlink" title="adaptive hash index:"></a>adaptive hash index:</h4><ul>
-<li>hash indexes are built on demand for the pages of the index that are accessed often  </li>
-<li>if innodb notices that queries could benefit from building a hash index, it does so automatically.  </li>
-<li>queries with like operators and % wildcards also tend not to benefit<h4 id="log-buffer"><a href="#log-buffer" class="headerlink" title="log buffer:"></a>log buffer:</h4></li>
-</ul>
-<h4 id="innodb-on-disk-structures"><a href="#innodb-on-disk-structures" class="headerlink" title="innodb on-disk structures:"></a>innodb on-disk structures:</h4><ul>
-<li>in the case of a runaway rollback, if you do not have valuable data in your database, it may be advisable to kill the database process rather than wait for millions of disk i/o operations to complete. for the complete procedure, see section 14.21.2, “forcing innodb recovery”.  </li>
-<li>innodb tables require more disk space than myisam tables  </li>
-</ul>
-<h4 id="auto-increment-handling-in-innodb"><a href="#auto-increment-handling-in-innodb" class="headerlink" title="auto_increment handling in innodb:"></a>auto_increment handling in innodb:</h4><ul>
-<li>an auto_increment column must be defined as part of an index such that it is possible to perform the equivalent of an indexed select max(ai_col) lookup on the table to obtain the maximum column value</li>
-<li>When a table is truncated, it is dropped and re-created in a new .ibd file, and the freed space is returned to the operating system</li>
-</ul>
-<h4 id="innodb-auto-increment-counter-initialization："><a href="#innodb-auto-increment-counter-initialization：" class="headerlink" title="innodb auto_increment counter initialization："></a>innodb auto_increment counter initialization：</h4><ul>
-<li><p>this counter is stored only in main memory, not on disk</p>
-</li>
-<li><p>innodb executes the equivalent of the following statement on the first insert into a table containing an auto_increment column. </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select max(ai_col) from table_name for update;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>if a show table status statement examines the table before the auto-increment counter is initialized, innodb initializes but does not increment the value</p>
-</li>
-<li><p>after the auto-increment counter has been initialized, if you do not explicitly specify a value for an auto_increment column, innodb increments the counter and assigns the new value to the column. if you insert a row that explicitly specifies the column value, and the value is greater than the current counter value, the counter is set to the specified column value.</p>
-</li>
-<li><p>innodb uses the in-memory auto-increment counter as long as the server runs. when the server is stopped and restarted, innodb reinitializes the counter for each table for the first insert to the table, as described earlier.</p>
-</li>
-</ul>
-<h4 id="the-physical-structure-of-an-innodb-index"><a href="#the-physical-structure-of-an-innodb-index" class="headerlink" title="the physical structure of an innodb index:"></a>the physical structure of an innodb index:</h4><p>when new records are inserted into an innodb clustered index, innodb tries to leave 1/16 of the page free for future insertions and updates of the index records. if index records are inserted in a sequential order (ascending or descending), the resulting index pages are about 15/16 full. if records are inserted in a random order, the pages are from 1/2 to 15/16 full.</p>
-<h4 id="full-text-index-document-id-and-fts-doc-id-column"><a href="#full-text-index-document-id-and-fts-doc-id-column" class="headerlink" title="full-text index document id and fts_doc_id column:"></a>full-text index document id and fts_doc_id column:</h4><ul>
-<li>innodb uses a unique document identifier referred to as a document id (doc_id) to map words in the full-text index to document records where the word appears. the mapping requires an fts_doc_id column on the indexed table. if an fts_doc_id column is not defined, innodb automatically adds a hidden fts_doc_id column when the full-text index is created</li>
-<li>to avoid rebuilding the table, the fts_doc_id column is retained when dropping a full-text index</li>
-<li>to remove full-text index entries for deleted records, run optimize table on the indexed table with innodb_optimize_fulltext_only=on to rebuild the full-text index </li>
-</ul>
-<h4 id="innodb-system-tablespace"><a href="#innodb-system-tablespace" class="headerlink" title="innodb system tablespace:"></a>innodb system tablespace:</h4><ul>
-<li>the system tablespace is the storage area for the innodb data dictionary, the doublewrite buffer, the change buffer, and undo logs. it may also contain table and index data if tables are created in the system tablespace rather than file-per-table or general tablespaces</li>
-<li>when a table is moved out of the system tablespace into its own .ibd file, the data files that make up the system tablespace remain the same size. the space formerly occupied by the table can be reused for new innodb data, but is not reclaimed for use by the operating system</li>
-</ul>
-<h4 id="transportable-tablespace-internals"><a href="#transportable-tablespace-internals" class="headerlink" title="transportable tablespace internals:"></a>transportable tablespace internals:</h4><ul>
-<li><p>when alter table … discard tablespace is run on the destination instance:<br>the table is locked in x mode.<br>the tablespace is detached from the table.</p>
-</li>
-<li><p>when flush tables … for export is run on the source instance:<br>the table being flushed for export is locked in shared mode.<br>the purge coordinator thread is stopped.<br>dirty pages are synchronized to disk.<br>table metadata is written to the binary .cfg file.</p>
-</li>
-<li><p>when unlock tables is run on the source instance:<br>the binary .cfg file is deleted.<br>the shared lock on the table or tables being imported is released and the purge coordinator thread is restarted.</p>
-</li>
-<li><p>when alter table … import tablespace is run on the destination instance, the import algorithm performs the following operations for each tablespace being imported:<br>each tablespace page is checked for corruption.<br>the space id and log sequence numbers (lsns) on each page are updated<br>flags are validated and lsn updated for the header page.<br>btree pages are updated.<br>the page state is set to dirty so that it is written to disk.</p>
-</li>
-</ul>
-<h4 id="Undo-Logs"><a href="#Undo-Logs" class="headerlink" title="Undo Logs:"></a>Undo Logs:</h4><ul>
-<li>The number of transactions that a rollback segment supports depends on the number of undo slots in the rollback segment and the number of undo logs required by each transaction.</li>
-<li>A transaction is assigned up to four undo logs, one for each of the following operation types:<br>INSERT operations on user-defined tables<br>UPDATE and DELETE operations on user-defined tables<br>INSERT operations on user-defined temporary tables<br>UPDATE and DELETE operations on user-defined temporary tables</li>
-<li>When transactions perform operations on temporary tables, the number of concurrent read-write transactions that InnoDB is capable of supporting is constrained by the number of rollback segments allocated to the temporary tablespace, which is 32.</li>
-<li>A transaction can encounter a concurrent transaction limit error before reaching the number of concurrent read-write transactions that InnoDB is capable of supporting. This occurs when the rollback segment assigned to a transaction runs out of undo slots. In such cases, try rerunning the transaction.</li>
-<li>If each transaction performs either an INSERT or an UPDATE or DELETE operation, the number of concurrent read-write transactions that InnoDB is capable of supporting is:<br>(innodb_page_size / 16) * (innodb_rollback_segments - 32)</li>
-<li>If each transaction performs an INSERT and an UPDATE or DELETE operation, the number of concurrent read-write transactions that InnoDB is capable of supporting is:<br>(innodb_page_size / 16 / 2) * (innodb_rollback_segments - 32)</li>
-</ul>
-<h4 id="lock："><a href="#lock：" class="headerlink" title="lock："></a>lock：</h4><ul>
-<li>Intention locks do not block anything except full table requests (for example, LOCK TABLES … WRITE). The main purpose of intention locks is to show that someone is locking a row, or going to lock a row in the table.</li>
-<li>Gap locking is not needed for statements that lock rows using a unique index to search for a unique row.</li>
-<li>Gap locking can be disabled explicitly. This occurs if you change the transaction isolation level to READ COMMITTED or enable the innodb_locks_unsafe_for_binlog system variable </li>
-<li>A gap lock taken by one transaction does not prevent another transaction from taking a gap lock on the same gap. There is no difference between shared and exclusive gap locks. They do not conflict with each other, and they perform the same function.  </li>
-</ul>
-<h4 id="locking-read"><a href="#locking-read" class="headerlink" title="locking read:"></a>locking read:</h4><ul>
-<li>Locking reads are only possible when autocommit is disabled (either by beginning transaction with START TRANSACTION or by setting autocommit to 0.</li>
-</ul>
-<h3 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h3><ul>
-<li>Concurrent DML is not permitted when adding an auto-increment column. Data is reorganized substantially, making it an expensive operation. At a minimum, ALGORITHM=INPLACE, LOCK=SHARED is required.</li>
-<li>This difference is due to the fact that the cascading deletes are handled internally by the InnoDB storage engine, which means that none of the changes are logged.</li>
-<li>A lock wait timeout causes InnoDB to roll back only the single statement that was waiting for the lock and encountered the timeout. (To have the entire transaction roll back, start the server with the –innodb-rollback-on-timeout option.) </li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql,reference</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/19/mysql-reference-innodb/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-sql优化-避免相关子查询" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/19/sql优化-避免相关子查询/">sql优化--避免相关子查询</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/19/sql优化-避免相关子查询/" class="archive-article-date">
-  	<time datetime="2019-09-19T03:35:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="注释："><a href="#注释：" class="headerlink" title="注释："></a>注释：</h3><ul>
-<li>以下sql中a表是大表  b表是小表</li>
-<li>a表和b表的结构是一样的，id为主键，modify_time上有索引</li>
-</ul>
-<h4 id="原始sql："><a href="#原始sql：" class="headerlink" title="原始sql："></a>原始sql：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">exists</span></span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">FROM</span> video_recognition_record_increment b</span><br><span class="line">    <span class="keyword">WHERE</span> b.id=a.id <span class="keyword">and</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)));</span><br></pre></td></tr></table></figure>
-
-<h4 id="执行计划："><a href="#执行计划：" class="headerlink" title="执行计划："></a>执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>index</td>
-<td>NULL</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>NULL</td>
-<td>221094212</td>
-<td>100.00</td>
-<td>Using where</td>
-</tr>
-<tr>
-<td>2</td>
-<td>DEPENDENT SUBQUERY</td>
-<td>b</td>
-<td>NULL</td>
-<td>eq_ref</td>
-<td>PRIMARY,i_modifytime</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>xiaoying_videoreview.a.id</td>
-<td>1</td>
-<td>39.21</td>
-<td>Using where</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><code>该执行计划 对a表的主键全扫描，然后根据a表主键的值 去判断是否在b表中</code>  </p>
-</blockquote>
-<hr>
-<h4 id="用in改写："><a href="#用in改写：" class="headerlink" title="用in改写："></a>用in改写：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> </span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="keyword">id</span></span><br><span class="line">    <span class="keyword">FROM</span> video_recognition_record_increment b</span><br><span class="line">    <span class="keyword">WHERE</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)));</span><br></pre></td></tr></table></figure>
-
-<h4 id="in改写后的执行计划："><a href="#in改写后的执行计划：" class="headerlink" title="in改写后的执行计划："></a>in改写后的执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>index</td>
-<td>NULL</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>NULL</td>
-<td>221099786</td>
-<td>100.00</td>
-<td>Using where</td>
-</tr>
-<tr>
-<td>2</td>
-<td>DEPENDENT SUBQUERY</td>
-<td>b</td>
-<td>NULL</td>
-<td>unique_subquery</td>
-<td>PRIMARY,i_modifytime</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>func</td>
-<td>1</td>
-<td>39.18</td>
-<td>Using where</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><code>该执行计划 也是对a表的主键全扫描，然后根据a表主键的值 去判断是否在b表中</code></p>
-</blockquote>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">由于我们知道 b是小表，所以应该让b表做**驱动表**去关联a表</span><br><span class="line">目前的mysql版本对子查询（in 或者exists）的优化有一定的弊端`s</span><br></pre></td></tr></table></figure>
-
-<h4 id="最终优化后的sql："><a href="#最终优化后的sql：" class="headerlink" title="最终优化后的sql："></a>最终优化后的sql：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a  <span class="keyword">join</span>  video_recognition_record_increment b <span class="keyword">on</span> a.id=b.id <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">where</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)) ;</span><br></pre></td></tr></table></figure>
-
-<h4 id="执行计划：-1"><a href="#执行计划：-1" class="headerlink" title="执行计划："></a>执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>SIMPLE</td>
-<td>b</td>
-<td>NULL</td>
-<td>range</td>
-<td>PRIMARY,i_modifytime</td>
-<td>i_modifytime</td>
-<td>5</td>
-<td>NULL</td>
-<td>3491248</td>
-<td>100.00</td>
-<td>Using where; Using index</td>
-</tr>
-<tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>eq_ref</td>
-<td>PRIMARY</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>xiaoying_videoreview.b.id</td>
-<td>1</td>
-<td>100.00</td>
-<td>NULL</td>
-</tr>
-</tbody></table>
-<blockquote>
-<ul>
-<li>该执行计划 利用b表上的索引字段做范围扫描，b表是驱动板，然后根据b表中id的值去判断是否在a表中，同时用到了索引覆盖</li>
-<li>这才是我们想要的执行计划</li>
-</ul>
-</blockquote>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">mysql,sql优化</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/19/sql优化-避免相关子查询/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/18/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/18/hello-world/" class="archive-article-date">
-  	<time datetime="2019-09-18T07:51:02.250Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/18/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -1780,8 +372,8 @@ if __name__ == &apos;__main__&apos;:
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
