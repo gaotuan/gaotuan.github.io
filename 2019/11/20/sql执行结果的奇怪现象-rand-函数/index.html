@@ -8,14 +8,20 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>sql执行结果的奇怪现象--rand()函数 | gtt-博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
+  <meta name="description" content="最近在优化 包含rand()函数的sql，发现了一个奇怪的现象：如果你看到下面这个图片圈圈中的sql执行结果不足为奇，那么说明你已经理解了这个sql 在mysql内部是怎么执行的，也就可以pass这篇文章了。select * from t where id=round(rand()*9+1);这个sql是怎么执行的呢？desc select * from t where id=round(rand">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
 <meta property="og:title" content="sql执行结果的奇怪现象--rand()函数">
 <meta property="og:url" content="http://yoursite.com/2019/11/20/sql执行结果的奇怪现象-rand-函数/index.html">
 <meta property="og:site_name" content="gtt-博客">
+<meta property="og:description" content="最近在优化 包含rand()函数的sql，发现了一个奇怪的现象：如果你看到下面这个图片圈圈中的sql执行结果不足为奇，那么说明你已经理解了这个sql 在mysql内部是怎么执行的，也就可以pass这篇文章了。select * from t where id=round(rand()*9+1);这个sql是怎么执行的呢？desc select * from t where id=round(rand">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-20T06:32:08.100Z">
+<meta property="og:image" content="http://yoursite.com/images/rand.png">
+<meta property="og:updated_time" content="2019-11-21T02:24:48.695Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sql执行结果的奇怪现象--rand()函数">
+<meta name="twitter:description" content="最近在优化 包含rand()函数的sql，发现了一个奇怪的现象：如果你看到下面这个图片圈圈中的sql执行结果不足为奇，那么说明你已经理解了这个sql 在mysql内部是怎么执行的，也就可以pass这篇文章了。select * from t where id=round(rand()*9+1);这个sql是怎么执行的呢？desc select * from t where id=round(rand">
+<meta name="twitter:image" content="http://yoursite.com/images/rand.png">
   
     <link rel="alternative" href="/atom.xml" title="gtt-博客" type="application/atom+xml">
   
@@ -193,7 +199,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>最近在优化 包含rand()函数的sql，发现了一个奇怪的现象：<br>如果你看到下面这个图片圈圈中的sql执行结果不足为奇，那么说明你已经理解了这个sql 在mysql内部是怎么执行的，也就可以pass这篇文章了。<br><img src="/images/rand.png" alt><br><code>select * from t where id=round(rand()*9+1);</code><br>这个sql是怎么执行的呢？<br>desc select * from t where id=round(rand()*9+1);;<br>+—-+————-+——-+——+—————+——+———+——+——+————-+<br>| id | select_type | table | type | possible_keys | key  | key_len | ref  | rows | Extra       |<br>+—-+————-+——-+——+—————+——+———+——+——+————-+<br>|  1 | SIMPLE      | t     | ALL  | NULL          | NULL | NULL    | NULL |   10 | Using where |<br>+—-+————-+——-+——+—————+——+———+——+——+————-+</p>
+<ul>
+<li>当使用rand()时，实际上是逐行提取数据，rand()每次生成一个随机数 再经过函数换算后，与当前行的id进行单行比对，  </li>
+<li>即先提取id=1的这行数据，然后和随机结果比对，相等则保留这个结果，再处理id=2的这行数据。每行数据都是这样处理，因此会出现图片中间结果。</li>
+</ul>
+<p>这也就引入了 执行效率的问题：<br>如果t表有1000万数据就会匹配1000万次，即便有索引也没用，也要全表扫描，可见如果数据量巨大时，sql的执行效率非常的低效</p>
+
       
 
       
@@ -232,6 +244,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       

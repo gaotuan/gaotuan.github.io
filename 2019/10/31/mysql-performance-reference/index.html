@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="gtt-博客">
 <meta property="og:description" content="note: Modifications to the setup_actors table affect only foreground threads created subsequent to the modification, not existing threads. To affect existing threads, modify the INSTRUMENTED and HISTO">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-31T03:18:41.642Z">
+<meta property="og:updated_time" content="2019-11-21T02:12:35.766Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql-performance-reference">
 <meta name="twitter:description" content="note: Modifications to the setup_actors table affect only foreground threads created subsequent to the modification, not existing threads. To affect existing threads, modify the INSTRUMENTED and HISTO">
@@ -202,6 +202,8 @@
 <li>global_instrumentation is the highest level consumer. If global_instrumentation is NO, it disables global instrumentation. All other settings are lower level and are not checked; it does not matter what they are set to</li>
 <li>thread_instrumentation is checked only if global_instrumentation is YES</li>
 <li>If thread_instrumentation is YES, the Performance Schema maintains thread-specific information and also checks events_xxx_current consumers</li>
+<li>if global_instrumentation is enabled, thread_instrumentation is checked. If thread_instrumentation is enabled, the events_xxx_current consumers are checked. If of these events_waits_current is enabled, events_waits_history and events_waits_history_long are checked.</li>
+<li></li>
 </ul>
 
       

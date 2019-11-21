@@ -17,7 +17,7 @@
 <meta property="og:description" content="innodb architecture: change buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. the buffered changes, which">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/innodb_arch.png">
-<meta property="og:updated_time" content="2019-10-21T09:58:34.948Z">
+<meta property="og:updated_time" content="2019-11-21T02:12:35.797Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql reference innodb">
 <meta name="twitter:description" content="innodb architecture: change buffer: the change buffer is a special data structure that caches changes to secondary index pages when those pages are not in the buffer pool. the buffered changes, which">
@@ -225,6 +225,8 @@
 <li><p>after the auto-increment counter has been initialized, if you do not explicitly specify a value for an auto_increment column, innodb increments the counter and assigns the new value to the column. if you insert a row that explicitly specifies the column value, and the value is greater than the current counter value, the counter is set to the specified column value.</p>
 </li>
 <li><p>innodb uses the in-memory auto-increment counter as long as the server runs. when the server is stopped and restarted, innodb reinitializes the counter for each table for the first insert to the table, as described earlier.</p>
+</li>
+<li><p>AUTO_INCREMENT column must be defined as part of an index such that it is possible to perform the equivalent of an indexed SELECT MAX(ai_col) lookup on the table to obtain the maximum column value</p>
 </li>
 </ul>
 <h4 id="the-physical-structure-of-an-innodb-index"><a href="#the-physical-structure-of-an-innodb-index" class="headerlink" title="the physical structure of an innodb index:"></a>the physical structure of an innodb index:</h4><p>when new records are inserted into an innodb clustered index, innodb tries to leave 1/16 of the page free for future insertions and updates of the index records. if index records are inserted in a sequential order (ascending or descending), the resulting index pages are about 15/16 full. if records are inserted in a random order, the pages are from 1/2 to 15/16 full.</p>
