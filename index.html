@@ -174,6 +174,86 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql慢查询日志丢失问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/22/mysql慢查询日志丢失问题/">mysql慢查询日志丢失问题</a>
+    </h1>
+  
+
+        
+        <a href="/2019/11/22/mysql慢查询日志丢失问题/" class="archive-article-date">
+  	<time datetime="2019-11-22T04:44:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们知道在slow_query_log开启的情况下，当log_output=table时，mysql会把执行时间超过long_query_time的sql语句记录在 mysql.slow_log表中。<br>默认的表定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `tt` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `name` varchar(200) NOT NULL</span><br><span class="line">) ENGINE=CSV DEFAULT CHARSET=latin1</span><br></pre></td></tr></table></figure>
+
+<p>csv存储引擎的表在磁盘上有三个物理文件：<br>slow_log.CSM metafile<br>slow_log.CSV 数据文件，文本格式 可阅读<br>slow_log.frm 表结构定义文件<br>当由于某种原因文件损坏时，虽然可以通过 CHECK TABLE 和 REPAIR TABLE 进行修复，但是从第一个损坏的行之后的数据会丢失。这个官网也有说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Warning:</span><br><span class="line">During repair, only the rows from the CSV file up to the first damaged row are copied to the new table. All other rows from the first damaged row to the end of the table are removed, even valid rows.</span><br></pre></td></tr></table></figure>
+
+<p>因此，为了尽可能减少数据的丢失，在使用check/repair table修复之前，可以手动去检查slow_log.CSV文件，手动把不符合格式的数据行删掉，尽肯能的减少数据丢失</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/11/22/mysql慢查询日志丢失问题/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-sql执行结果的奇怪现象-rand-函数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1489,243 +1569,6 @@ if __name__ == &apos;__main__&apos;:
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/09/19/mysql-reference-innodb/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-sql优化-避免相关子查询" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/19/sql优化-避免相关子查询/">sql优化--避免相关子查询</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/19/sql优化-避免相关子查询/" class="archive-article-date">
-  	<time datetime="2019-09-19T03:35:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="注释："><a href="#注释：" class="headerlink" title="注释："></a>注释：</h3><ul>
-<li>以下sql中a表是大表  b表是小表</li>
-<li>a表和b表的结构是一样的，id为主键，modify_time上有索引</li>
-</ul>
-<h4 id="原始sql："><a href="#原始sql：" class="headerlink" title="原始sql："></a>原始sql：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">exists</span></span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">FROM</span> video_recognition_record_increment b</span><br><span class="line">    <span class="keyword">WHERE</span> b.id=a.id <span class="keyword">and</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)));</span><br></pre></td></tr></table></figure>
-
-<h4 id="执行计划："><a href="#执行计划：" class="headerlink" title="执行计划："></a>执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>index</td>
-<td>NULL</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>NULL</td>
-<td>221094212</td>
-<td>100.00</td>
-<td>Using where</td>
-</tr>
-<tr>
-<td>2</td>
-<td>DEPENDENT SUBQUERY</td>
-<td>b</td>
-<td>NULL</td>
-<td>eq_ref</td>
-<td>PRIMARY,i_modifytime</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>xiaoying_videoreview.a.id</td>
-<td>1</td>
-<td>39.21</td>
-<td>Using where</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><code>该执行计划 对a表的主键全扫描，然后根据a表主键的值 去判断是否在b表中</code>  </p>
-</blockquote>
-<hr>
-<h4 id="用in改写："><a href="#用in改写：" class="headerlink" title="用in改写："></a>用in改写：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> </span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="keyword">id</span></span><br><span class="line">    <span class="keyword">FROM</span> video_recognition_record_increment b</span><br><span class="line">    <span class="keyword">WHERE</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)));</span><br></pre></td></tr></table></figure>
-
-<h4 id="in改写后的执行计划："><a href="#in改写后的执行计划：" class="headerlink" title="in改写后的执行计划："></a>in改写后的执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>index</td>
-<td>NULL</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>NULL</td>
-<td>221099786</td>
-<td>100.00</td>
-<td>Using where</td>
-</tr>
-<tr>
-<td>2</td>
-<td>DEPENDENT SUBQUERY</td>
-<td>b</td>
-<td>NULL</td>
-<td>unique_subquery</td>
-<td>PRIMARY,i_modifytime</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>func</td>
-<td>1</td>
-<td>39.18</td>
-<td>Using where</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><code>该执行计划 也是对a表的主键全扫描，然后根据a表主键的值 去判断是否在b表中</code></p>
-</blockquote>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">由于我们知道 b是小表，所以应该让b表做**驱动表**去关联a表</span><br><span class="line">目前的mysql版本对子查询（in 或者exists）的优化有一定的弊端`s</span><br></pre></td></tr></table></figure>
-
-<h4 id="最终优化后的sql："><a href="#最终优化后的sql：" class="headerlink" title="最终优化后的sql："></a>最终优化后的sql：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> video_recognition_record_2017_08 a  <span class="keyword">join</span>  video_recognition_record_increment b <span class="keyword">on</span> a.id=b.id <span class="keyword">SET</span> a.flag=<span class="number">1</span></span><br><span class="line"><span class="keyword">where</span> b.modify_time&gt;<span class="built_in">date</span>(<span class="keyword">date_sub</span>(<span class="keyword">now</span>( ), <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span>)) ;</span><br></pre></td></tr></table></figure>
-
-<h4 id="执行计划：-1"><a href="#执行计划：-1" class="headerlink" title="执行计划："></a>执行计划：</h4><table>
-<thead>
-<tr>
-<th>id</th>
-<th>select_type</th>
-<th>table</th>
-<th>partitions</th>
-<th>type</th>
-<th>possible_keys</th>
-<th>key</th>
-<th>key_len</th>
-<th>ref</th>
-<th>rows</th>
-<th>filtered</th>
-<th>Extra</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>SIMPLE</td>
-<td>b</td>
-<td>NULL</td>
-<td>range</td>
-<td>PRIMARY,i_modifytime</td>
-<td>i_modifytime</td>
-<td>5</td>
-<td>NULL</td>
-<td>3491248</td>
-<td>100.00</td>
-<td>Using where; Using index</td>
-</tr>
-<tr>
-<td>1</td>
-<td>UPDATE</td>
-<td>a</td>
-<td>NULL</td>
-<td>eq_ref</td>
-<td>PRIMARY</td>
-<td>PRIMARY</td>
-<td>8</td>
-<td>xiaoying_videoreview.b.id</td>
-<td>1</td>
-<td>100.00</td>
-<td>NULL</td>
-</tr>
-</tbody></table>
-<blockquote>
-<ul>
-<li>该执行计划 利用b表上的索引字段做范围扫描，b表是驱动板，然后根据b表中id的值去判断是否在a表中，同时用到了索引覆盖</li>
-<li>这才是我们想要的执行计划</li>
-</ul>
-</blockquote>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">mysql,sql优化</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/19/sql优化-避免相关子查询/">展开全文 >></a>
         </p>
       
 
