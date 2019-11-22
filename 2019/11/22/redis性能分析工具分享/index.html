@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | gtt-博客</title>
+  <title>redis性能分析工具分享 | gtt-博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="gtt-博客">
-<meta property="og:url" content="http://yoursite.com/archives/page/2/index.html">
+  <meta name="description" content="redis-faina   一个使用redis自带命令monitor的输出结果做分析的python脚本，在命令行下使用，可以做实时分析使用。   官网：https://github.com/Instagram/redis-faina 1234cd /opt/testgit clone https://github.com/Instagram/redis-faina.gitcd redis-fain">
+<meta name="keywords" content="redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis性能分析工具分享">
+<meta property="og:url" content="http://yoursite.com/2019/11/22/redis性能分析工具分享/index.html">
 <meta property="og:site_name" content="gtt-博客">
+<meta property="og:description" content="redis-faina   一个使用redis自带命令monitor的输出结果做分析的python脚本，在命令行下使用，可以做实时分析使用。   官网：https://github.com/Instagram/redis-faina 1234cd /opt/testgit clone https://github.com/Instagram/redis-faina.gitcd redis-fain">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-11-22T07:06:26.755Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="gtt-博客">
+<meta name="twitter:title" content="redis性能分析工具分享">
+<meta name="twitter:description" content="redis-faina   一个使用redis自带命令monitor的输出结果做分析的python脚本，在命令行下使用，可以做实时分析使用。   官网：https://github.com/Instagram/redis-faina 1234cd /opt/testgit clone https://github.com/Instagram/redis-faina.gitcd redis-fain">
   
     <link rel="alternative" href="/atom.xml" title="gtt-博客" type="application/atom+xml">
   
@@ -172,139 +177,186 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-redis性能分析工具分享" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      redis性能分析工具分享
+    </h1>
+  
+
+        
+        <a href="/2019/11/22/redis性能分析工具分享/" class="archive-article-date">
+  	<time datetime="2019-11-22T07:02:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-22</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="redis-faina"><a href="#redis-faina" class="headerlink" title="redis-faina"></a>redis-faina</h4><p>   一个使用redis自带命令monitor的输出结果做分析的python脚本，在命令行下使用，可以做实时分析使用。<br>   官网：<a href="https://github.com/Instagram/redis-faina" target="_blank" rel="noopener">https://github.com/Instagram/redis-faina</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/test</span><br><span class="line">git clone https://github.com/Instagram/redis-faina.git</span><br><span class="line">cd redis-faina/</span><br><span class="line">redis-cli -p 6379 MONITOR | head -n 1000 | ./redis-faina.py --redis-version=2.4|more</span><br></pre></td></tr></table></figure>
+
+<p>分析结果如下：</p>
+<h1 id="Overall-Stats"><a href="#Overall-Stats" class="headerlink" title="Overall Stats"></a>Overall Stats</h1><p>Lines Processed         10000<br>Commands/Sec            4881.51</p>
+<h1 id="Top-Prefixes"><a href="#Top-Prefixes" class="headerlink" title="Top Prefixes"></a>Top Prefixes</h1><p>n/a</p>
+<h1 id="Top-Keys"><a href="#Top-Keys" class="headerlink" title="Top Keys"></a>Top Keys</h1><p>d488443c356aafed9a70638580f17ec3        9997    (99.97%)<br>vcm_buried_point                        2       (0.02%)</p>
+<h1 id="Top-Commands"><a href="#Top-Commands" class="headerlink" title="Top Commands"></a>Top Commands</h1><p>spop    9997    (99.97%)<br>brpop   2       (0.02%)</p>
+<h1 id="Command-Time-microsecs"><a href="#Command-Time-microsecs" class="headerlink" title="Command Time (microsecs)"></a>Command Time (microsecs)</h1><p>Median          197.0<br>75%             212.0<br>90%             237.75<br>99%             278.75</p>
+<h1 id="Heaviest-Commands-microsecs"><a href="#Heaviest-Commands-microsecs" class="headerlink" title="Heaviest Commands (microsecs)"></a>Heaviest Commands (microsecs)</h1><p>spop    2048479.25<br>brpop   67.0</p>
+<h1 id="Slowest-Calls"><a href="#Slowest-Calls" class="headerlink" title="Slowest Calls"></a>Slowest Calls</h1><p>4712.0          “spop” “d488443c356aafed9a70638580f17ec3”<br>4619.25         “spop” “d488443c356aafed9a70638580f17ec3”<br>4609.75         “spop” “d488443c356aafed9a70638580f17ec3”<br>1817.25         “spop” “d488443c356aafed9a70638580f17ec3”<br>1341.0          “spop” “d488443c356aafed9a70638580f17ec3”<br>1273.25         “spop” “d488443c356aafed9a70638580f17ec3”<br>598.0           “spop” “d488443c356aafed9a70638580f17ec3”<br>562.0           “spop” “d488443c356aafed9a70638580f17ec3”</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/images/ali_money.png" style="width:200px;height:200px;">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/images/wx_money.png" style="width:200px;height:200px;">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/19/mysql-reference-innodb/" class="archive-article-date">
-  	<time datetime="2019-09-19T11:49:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/19/mysql-reference-innodb/">mysql reference innodb</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql,reference</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">redis</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/11/22/redis性能分析工具分享/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/19/sql优化-避免相关子查询/" class="archive-article-date">
-  	<time datetime="2019-09-19T03:35:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/11/22/mysql慢查询日志丢失问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mysql慢查询日志丢失问题</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/19/sql优化-避免相关子查询/">sql优化--避免相关子查询</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">mysql,sql优化</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/18/hello-world/" class="archive-article-date">
-  	<time datetime="2019-09-18T07:51:02.250Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/18/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-    </nav>
   
 
 
@@ -328,8 +380,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
