@@ -174,6 +174,84 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql好文章分享" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/26/mysql好文章分享/">mysql好文章分享</a>
+    </h1>
+  
+
+        
+        <a href="/2019/11/26/mysql好文章分享/" class="archive-article-date">
+  	<time datetime="2019-11-26T05:31:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>mysql 好文章分享，持续更新中….</p>
+<ol>
+<li>Understanding Hash Joins in MySQL 8<br><a href="https://www.percona.com/blog/2019/10/30/understanding-hash-joins-in-mysql-8/" target="_blank" rel="noopener">https://www.percona.com/blog/2019/10/30/understanding-hash-joins-in-mysql-8/</a></li>
+<li>Column Histograms on Percona Server and MySQL 8.0<br><a href="https://www.percona.com/blog/2019/10/29/column-histograms-on-percona-server-and-mysql-8-0/" target="_blank" rel="noopener">https://www.percona.com/blog/2019/10/29/column-histograms-on-percona-server-and-mysql-8-0/</a></li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/11/26/mysql好文章分享/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-redis性能分析工具分享" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1452,99 +1530,6 @@ if __name__ == &apos;__main__&apos;:
 
 
   
-    <article id="post-defining-a-primary-key-for-each-table" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/20/defining-a-primary-key-for-each-table/">defining a primary key for each table</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/20/defining-a-primary-key-for-each-table/" class="archive-article-date">
-  	<time datetime="2019-09-20T09:57:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Defining-a-PRIMARY-KEY-for-Each-Table"><a href="#Defining-a-PRIMARY-KEY-for-Each-Table" class="headerlink" title="Defining a PRIMARY KEY for Each Table:"></a>Defining a PRIMARY KEY for Each Table:</h4><ul>
-<li>The PRIMARY KEY clause is a critical factor affecting the performance of MySQL queries and the space usage for tables and indexes. The primary key uniquely identifies a row in a table. Every row in the table must have a primary key value, and no two rows can have the same primary key value.</li>
-<li>These are guidelines for the primary key, followed by more detailed explanations.</li>
-<li>Declare a PRIMARY KEY for each table. Typically, it is the most important column that you refer to in WHERE clauses when looking up a single row</li>
-<li>Declare the PRIMARY KEY clause in the original CREATE TABLE statement, rather than adding it later through an ALTER TABLE statement</li>
-<li>Choose the column and its data type carefully. Prefer numeric columns over character or string ones.</li>
-<li>Consider using an auto-increment column if there is not another stable, unique, non-null, numeric column to use.</li>
-<li>An auto-increment column is also a good choice if there is any doubt whether the value of the primary key column could ever change. Changing the value of a primary key column is an expensive operation, possibly involving rearranging data within the table and within each secondary index.</li>
-</ul>
-<p>Consider adding a primary key to any table that does not already have one. <strong>Use the smallest practical numeric type based on the maximum projected size of the table.</strong> <strong><em>This can make each row slightly more compact, which can yield substantial space savings for large tables. The space savings are multiplied if the table has any secondary indexes, because the primary key value is repeated in each secondary index entry</em></strong>. <em>In addition to reducing data size on disk, a small primary key also lets more data fit into the buffer pool, speeding up all kinds of operations and improving concurrency.</em></p>
-<p>if the table already has a primary key on some longer column, such as a VARCHAR, consider adding a new unsigned AUTO_INCREMENT column and switching the primary key to that, even if that column is not referenced in queries. This design change can produce substantial space savings in the secondary indexes. You can designate the former primary key columns as UNIQUE NOT NULL to enforce the same constraints as the PRIMARY KEY clause, that is, to prevent duplicate or null values across all those columns.</p>
-<p><strong>if you leave the PRIMARY KEY clause out entirely, MySQL creates an invisible one for you. It is a 6-byte value that might be longer than you need, thus wasting space. Because it is hidden, you cannot refer to it in queries.</strong></p>
-<h4 id="不要使用uuid做主键："><a href="#不要使用uuid做主键：" class="headerlink" title="不要使用uuid做主键："></a>不要使用uuid做主键：</h4><ul>
-<li><a href="https://www.percona.com/blog/2019/11/22/uuids-are-popular-but-bad-for-performance-lets-discuss/" target="_blank" rel="noopener">https://www.percona.com/blog/2019/11/22/uuids-are-popular-but-bad-for-performance-lets-discuss/</a></li>
-</ul>
-<ol>
-<li>整数类型的比较比字符串更节省cpu<br>Integer values are compared up to 8 bytes at a time by the CPU but UUID values are compared char per char</li>
-<li>uuid更浪费空间</li>
-<li>使用uuid的主键insert时，性能受限于内存大小<br>If you are using random UUID values as primary keys, your performance is limited by the amount of memory you can afford.</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/20/defining-a-primary-key-for-each-table/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1718,7 +1703,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             </li>
           
             <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接4</a>
+              <a href="https://www.percona.com/blog/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>Percona blog</a>
             </li>
           
             <li class="search-li">
