@@ -1484,9 +1484,14 @@ if __name__ == &apos;__main__&apos;:
 <p>Consider adding a primary key to any table that does not already have one. <strong>Use the smallest practical numeric type based on the maximum projected size of the table.</strong> <strong><em>This can make each row slightly more compact, which can yield substantial space savings for large tables. The space savings are multiplied if the table has any secondary indexes, because the primary key value is repeated in each secondary index entry</em></strong>. <em>In addition to reducing data size on disk, a small primary key also lets more data fit into the buffer pool, speeding up all kinds of operations and improving concurrency.</em></p>
 <p>if the table already has a primary key on some longer column, such as a VARCHAR, consider adding a new unsigned AUTO_INCREMENT column and switching the primary key to that, even if that column is not referenced in queries. This design change can produce substantial space savings in the secondary indexes. You can designate the former primary key columns as UNIQUE NOT NULL to enforce the same constraints as the PRIMARY KEY clause, that is, to prevent duplicate or null values across all those columns.</p>
 <p><strong>if you leave the PRIMARY KEY clause out entirely, MySQL creates an invisible one for you. It is a 6-byte value that might be longer than you need, thus wasting space. Because it is hidden, you cannot refer to it in queries.</strong></p>
-<ul>
+<h4 id="不要使用uuid做主键："><a href="#不要使用uuid做主键：" class="headerlink" title="不要使用uuid做主键："></a>不要使用uuid做主键：</h4><ul>
 <li><a href="https://www.percona.com/blog/2019/11/22/uuids-are-popular-but-bad-for-performance-lets-discuss/" target="_blank" rel="noopener">https://www.percona.com/blog/2019/11/22/uuids-are-popular-but-bad-for-performance-lets-discuss/</a></li>
 </ul>
+<ol>
+<li>整数类型的比较比字符串更节省cpu<br>Integer values are compared up to 8 bytes at a time by the CPU but UUID values are compared char per char</li>
+<li>uuid更浪费空间</li>
+<li>使用uuid的主键insert时，性能受限于内存大小<br>If you are using random UUID values as primary keys, your performance is limited by the amount of memory you can afford.</li>
+</ol>
 
       
 
