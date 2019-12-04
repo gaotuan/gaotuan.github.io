@@ -174,6 +174,82 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-datetime与timestamp对比" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/04/mysql-datetime与timestamp对比/">mysql datetime与timestamp对比</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/04/mysql-datetime与timestamp对比/" class="archive-article-date">
+  	<time datetime="2019-12-04T06:50:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>The main differences:<br>TIMESTAMP used to track changes to records, and update every time when the record is changed. DATETIME used to store specific and static value which is not affected by any changes in records.<br>TIMESTAMP also affected by different TIME ZONE related setting. DATETIME is constant.<br>TIMESTAMP internally converted current time zone to UTC for storage, and during retrieval converted back to the current time zone. DATETIME can not do this.<br>TIMESTAMP supported range: ‘1970-01-01 00:00:01′ UTC to ‘2038-01-19 03:14:07′ UTC DATETIME supported range: ‘1000-01-01 00:00:00′ to ‘9999-12-31 23:59:59′</p>
+<p>timestamp 除了时区转换带来的维护麻烦的问题，<br>还有些反直觉的行为，比如在一个表里面第一次添加 timestamp的列，会默认加上 not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP的属性<br>timestamp多用于跟踪行变化</p>
+<p>从存储上timestamp比datetime要好点，5.6.4版本之前datetime比timestamp存储过4个bytes，5.6.4之后多1个bytes<br>性能上也差不了多少，timestamp需要多做一步转换，现在的数据库实例瓶颈基本都不在cpu上，<br>比起性能，数据的正确性和易维护性更重要点。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/04/mysql-datetime与timestamp对比/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-mysql好文章分享" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1385,123 +1461,6 @@ if __name__ == &apos;__main__&apos;:
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/09/26/mysql-event-遇到的坑/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-limits-on-innodb-tables" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/20/limits-on-innodb-tables/">limits on innodb tables</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/20/limits-on-innodb-tables/" class="archive-article-date">
-  	<time datetime="2019-09-20T09:59:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Limits-on-InnoDB-Tables"><a href="#Limits-on-InnoDB-Tables" class="headerlink" title="Limits on InnoDB Tables:"></a>Limits on InnoDB Tables:</h4><ul>
-<li>A table can contain a maximum of 1017 columns. Virtual generated columns are included in this limit.</li>
-<li>A table can contain a maximum of 64 secondary indexes.</li>
-<li>If innodb_large_prefix is enabled (the default), the index key prefix limit is 3072 bytes for InnoDB tables that use DYNAMIC or COMPRESSED row format. If innodb_large_prefix is disabled, the index key prefix limit is 767 bytes for tables of any row format.</li>
-<li>A maximum of 16 columns is permitted for multicolumn indexes</li>
-<li>The maximum row length, except for variable-length columns (VARBINARY, VARCHAR, BLOB and TEXT), is slightly less than half of a page. LONGBLOB and LONGTEXT columns must be less than 4GB,</li>
-<li>Although InnoDB supports row sizes larger than 65,535 bytes internally, MySQL itself imposes a row-size limit of 65,535 for the combined size of all columns</li>
-<li>The internal representation of a MySQL table has a maximum row size limit of 65,535 bytes, even if the storage engine is capable of supporting larger rows. BLOB and TEXT columns only contribute 9 to 12 bytes toward the row size limit because their contents are stored separately from the rest of the row.</li>
-<li>On some older operating systems, files must be less than 2GB. This is not a limitation of InnoDB itself, but if you require a large tablespace, configure it using several smaller data files rather than one large data file.</li>
-<li>The combined size of the InnoDB log files can be up to 512GB.</li>
-<li>The minimum tablespace size is slightly larger than 10MB. The maximum tablespace size depends on the InnoDB page size.<table>
-<thead>
-<tr>
-<th>InnoDB Page Size</th>
-<th>Maximum Tablespace Size</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>4KB</td>
-<td>16TB</td>
-</tr>
-<tr>
-<td>8KB</td>
-<td>32TB</td>
-</tr>
-<tr>
-<td>16KB</td>
-<td>64TB</td>
-</tr>
-<tr>
-<td>32KB</td>
-<td>128TB</td>
-</tr>
-<tr>
-<td>64KB</td>
-<td>256TB</td>
-</tr>
-</tbody></table>
-</li>
-</ul>
-<p><code>The maximum tablespace size is also the maximum size for a table</code></p>
-<ul>
-<li>Tablespace files cannot exceed 4GB on Windows 32-bit systems</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/20/limits-on-innodb-tables/">展开全文 >></a>
         </p>
       
 
