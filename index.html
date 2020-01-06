@@ -174,6 +174,89 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MySQL-常用规范" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/06/MySQL-常用规范/">MySQL 常用规范</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/06/MySQL-常用规范/" class="archive-article-date">
+  	<time datetime="2020-01-06T03:54:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1. 设计规范<br>1.1 数据库设计<br>1.1.1 库<br>【强制】库的名称必须控制在32个字符以内，相关模块的表名与表名之间尽量提现join的关系，如user表和user_login表。<br>【强制】库的名称格式：业务系统名称_子系统名，同一模块使用的表名尽量使用统一前缀。<br>【强制】一般分库名称命名格式是库通配名_编号，编号从0开始递增，比如wenda_001以时间进行分库的名称格式是“库通配名_时间”<br>【强制】创建数据库时必须显式指定字符集，并且字符集只能utf8mb4。没有特殊说明校队规则使用utf8mb4默认的规则<br>1.1.2 表结构<br>【强制】表和列的名称必须控制在32个字符以内，表名只能使用字母、数字和下划线，一律小写。命名避开关键字，如key，order，date等。<br>【强制】表名要求模块名强相关，如师资系统采用”sz”作为前缀，渠道系统采用”qd”作为前缀等。从表名可以定位到具体的模块。<br>【强制】创建表时必须显式指定字符集为utf8或utf8mb4。<br>【强制】创建表时必须显式指定表存储引擎类型，如无特殊需求，一律为InnoDB。<br>【强制】建表必须有comment<br>【建议】建表时关于主键：(1)强制要求主键为id，类型为int或bigint，且为auto_increment(2)标识表里每一行主体的字段不要设为主键，建议设为其他字段如user_id，order_id等，并建立unique key索引。因为如果设为主键且主键值为随机插入，则会导致innodb内部page分裂和大量随机I/O，性能下降。<br>【建议】核心表（如用户表，金钱相关的表）必须有行数据的创建时间字段create_time和最后更新时间字段update_time，便于查问题。<br>【建议】表中所有字段必须都是NOT NULL属性，业务可以根据需要定义DEFAULT值。因为使用NULL时，无论表还是索引中每行中的null列都需要额外的空间来标识。<br>【强制】表中不允许使用外建<br>【建议】建议对表里的blob、text等大字段，垂直拆分到其他表里，仅在需要读这些对象的时候才去select。<br>【建议】反范式设计：把经常需要join查询的字段，在其他表里冗余一份。如user_name属性在user_account，user_login_log等表里冗余一份，减少join查询。<br>【强制】中间表用于保留中间结果集，名称必须以tmp_开头。备份表用于备份或抓取源表快照，名称必须以bak_开头。中间表和备份表定期清理。<br>【强制】对于超过100W行的大表进行alter table，必须经过DBA审核，并在业务低峰期执行。因为alter table会产生表锁，期间阻塞对于该表的所有写入，对于业务可能会产生极大影响。<br>【建议】对于有报表业务的表添加create_time列，并添加索引<br>1.1.3 列数据类型优化<br>【建议】表中的自增列（auto_increment属性），推荐使用bigint类型。因为无符号int存储范围为-2147483648~2147483647（大约21亿左右），溢出后会导致报错。<br>【建议】业务中选择性很少的状态status、类型type等字段推荐使用tinytint或者smallint类型节省存储空间。<br>【建议】业务中IP地址字段推荐使用int类型，不推荐用char(15)。因为int只占4字节，可以用如下函数相互转换，而char(15)占用至少15字节。一旦表数据行数到了1亿，那么要多用1.1G存储空间。 SQL：select inet_aton(‘192.168.2.12’); select inet_ntoa(3232236044); PHP: ip2long(‘192.168.2.12’); long2ip(3530427185);<br>【建议】不推荐使用enum，set。 因为它们浪费空间，且枚举值写死了，变更不方便。推荐使用tinyint或smallint。<br>【建议】不推荐使用blob，text等类型。它们都比较浪费硬盘和内存空间。在加载表数据时，会读取大字段到内存里从而浪费内存空间，影响系统性能。建议和PM、RD沟通，是否真的需要这么大字段。Innodb中当一行记录超过8098字节时，会将该记录中选取最长的一个字段将其768字节放在原始page里，该字段余下内容放在overflow-page里。不幸的是在compact行格式下，原始page和overflow-page都会加载。<br>【建议】存储金钱的字段，建议用int，程序端乘以100和除以100进行存取。因为int占用4字节，而double占用8字节，空间浪费。float和double在存储和计算时可能会丢失精度。<br>【建议】文本数据尽量用varchar存储。因为varchar是变长存储，比char更省空间。MySQL server层规定一行所有文本最多存65535字节，因此在utf8字符集下最多存21844个字符，超过会自动转换为mediumtext字段。而text在utf8字符集下最多存21844个字符，mediumtext最多存2^24/3个字符，longtext最多存2^32个字符。一般建议用varchar类型，字符数不要超过2700。<br>【建议】时间类型尽量选取timestamp。因为datetime占用8字节，timestamp仅占用4字节，并且性能更高。但是要注意弊端：范围为1970-01-01 00:00:01到2038-01-01 00:00:00，并且受time_zone影响。更为高阶的方法，选用int来存储时间，使用SQL函数unix_timestamp()和from_unixtime()来进行转换。<br>1.1.4 索引设计<br>【强制】InnoDB表必须主键为id int/bigint auto_increment,且主键值禁止被更新。<br>【建议】主键的名称以“pk_”开头，唯一键以“uiq_”开头，普通索引以“idx_”开头，一律使用小写格式，以表名/字段的名称缩写作为后缀。<br>【强制】InnoDB和MyISAM存储引擎表，索引类型必须为BTREE；MEMORY表可以根据需要选择HASH或者BTREE类型索引。<br>【强制】单个索引中每个索引记录的长度不能超过64KB。<br>【建议】单个表上的索引个数不能超过7个。<br>【建议】在建立索引时，多考虑建立联合索引，并把区分度最高的字段放在最前面。如列userid的区分度可由select count(distinct userid)计算出来。<br>【建议】在多表join的SQL里，保证被驱动表的连接列上有索引，这样join执行效率最高。<br>【建议】建表或加索引时，保证表里互相不存在冗余索引。对于MySQL来说，如果表里已经存在key(a,b)，则key(a)为冗余索引，需要删除。<br>【建议】不要在更新十分频繁、区分度不高的列上建立索引<br>【建议】对于查询很频繁的sql，可以考虑使用索引覆盖的方式建立复合索引提升查询性能<br>1.1.5 分库分表、分区表<br>【强制】单个分区表中的分区（包括子分区）个数不能太多，5.6.7版本之前不能超过1024个，5.6.7版本之后的不能超过8192。<br>【强制】上线前DBA必须指定分区表的创建、清理策略。<br>【强制】访问分区表的SQL必须包含分区键。<br>【建议】单个分区文件不超过2G，总大小不超过50G。建议总分区数不超过20个。<br>【强制】对于分区表执行alter table操作，必须在业务低峰期执行。<br>【强制】采用分库策略的，库的数量不能超过1024<br>【强制】采用分表策略的，表的数量不能超过4096<br>【建议】单个分表不超过500W行，ibd文件大小不超过2G，这样才能让数据分布式变得性能更佳。<br>【建议】水平分表尽量用取模方式，日志、报表类数据建议采用日期进行分表。<br>1.2 程序层设计建议<br>【建议】新的代码不要用model，推荐使用手动拼SQL+绑定变量传入参数的方式。因为model虽然可以使用面向对象的方式操作db，但是其使用不当很容易造成生成的SQL非常复杂，且model层自己做的强制类型转换性能较差，最终导致数据库性能下降。<br>【建议】前端程序连接MySQL或者redis，必须要有连接超时和失败重连机制，且失败重试必须有间隔时间。<br>【建议】前端程序报错里尽量能够提示MySQL或redis原生态的报错信息，便于排查错误。<br>【建议】对于有连接池的前端程序，必须根据业务需要配置初始、最小、最大连接数，超时时间以及连接回收机制，否则会耗尽数据库连接资源，造成线上事故。<br>【建议】对于log或history类型的表，随时间增长容易越来越大，因此上线前RD或者DBA必须建立表数据清理或归档方案。<br>【建议】在应用程序设计阶段，RD必须考虑并规避数据库中主从延迟对于业务的影响。尽量避免从库短时延迟（20秒以内）对业务造成影响，建议强制一致性的读开启事务走主库，或更新后过一段时间再去读从库。<br>【建议】多个并发业务逻辑访问同一块数据（innodb表）时，会在数据库端产生行锁甚至表锁导致并发下降，因此建议更新类SQL尽量基于主键去更新。<br>【建议】业务逻辑之间加锁顺序尽量保持一致，否则会导致死锁。<br>【建议】对于单表读写比大于10:1的数据行或单个列，可以将热点数据放在缓存里（如mecache或redis），加快访问速度，降低MySQL压力。</p>
+<ol start="2">
+<li>SQL编写</li>
+<li>1 sql语句<br>【强制】SELECT语句必须指定具体字段名称，禁止写成*。因为select *会将不该读的数据也从MySQL里读出来，增加cpu、io、net消耗，容易出现bug，不能使用索引覆盖。<br>【强制】insert语句指定具体字段名称，不要写成insert into t1 values(…)，道理同上。<br>【建议】insert into…values(XX),(XX),(XX)…。这里XX的值不要超过5000个。值过多虽然上线很很快，但会引起主从同步延迟。<br>【建议】SELECT语句不要使用UNION，推荐使用UNION ALL，并且UNION子句个数限制在5个以内。因为union all不需要去重，节省数据库资源，提高性能。<br>【建议】in值列表限制在500以内。例如select… where userid in(….500个以内…)，这么做是为了减少底层扫描，减轻数据库压力从而加速查询。<br>【建议】事务里批量更新数据需要控制数量，进行必要的sleep，做到少量多次。避免大事务，尽可能降低主从延迟。<br>【强制】事务涉及的表必须全部是innodb表。否则一旦失败不会全部回滚，且易造成主从库同步终端。<br>【强制】写入和事务发往主库，只读SQL发往从库。<br>【强制】除静态表或小表（100行以内），DML语句必须有where条件，且使用索引查找。<br>【强制】生产环境禁止使用hint，如sql_no_cache，force index，ignore key，straight join等。因为hint是用来强制SQL按照某个执行计划来执行，但随着数据量变化我们无法保证自己当初的预判是正确的，因此我们要相信MySQL优化器！<br>【强制】where条件里等号左右字段类型必须一致，避免数据类型的隐式转换，否则无法利用索引。<br>【建议】SELECT|UPDATE|DELETE|REPLACE要有WHERE子句，且WHERE子句的条件必需使用索引查找。<br>【强制】生产数据库中强烈不推荐大表上发生全表扫描，但对于100行以下的静态表可以全表扫描。查询数据量不要超过表行数的25%，否则不会利用索引。<br>【强制】WHERE 子句中禁止只使用全模糊的LIKE条件进行查找，必须有其他等值或范围查询条件，否则无法利用索引。<br>【建议】索引列不要使用函数或表达式，否则无法利用索引。如where length(name)=’Admin’或where user_id+2=10023。<br>【建议】减少使用or语句，可将or语句优化为union，然后在各个where条件上建立索引。如where a=1 or b=2优化为where a=1… union …where b=2, key(a),key(b)。<br>【建议】分页查询，当limit起点较高时，可先用过滤条件进行过滤。如select a,b,c from t1 limit 10000,20;优化为: select a,b,c from t1 where id&gt;10000 limit 20;。<br>【建议】利用索引覆盖来进行查询操作，避免回表操作。<br>【强制】在没有DBA同意的情况下，禁止使用order by rand()进行随机排序</li>
+<li>2 多表连接<br>【强制】禁止跨db的join语句。因为这样可以减少模块间耦合，为数据库拆分奠定坚实基础。<br>【强制】禁止在业务的更新类SQL语句中使用join，比如update t1 join t2…。<br>【建议】不建议使用子查询，建议将子查询SQL拆开结合程序多次查询，或使用join来代替子查询。<br>【建议】线上环境，多表join不要超过3个表。<br>【建议】多表连接查询推荐使用别名，且SELECT列表中要用别名引用字段，数据库.表格式，如select a.id from db1.table1 a where …。<br>【建议】在多表join中，尽量选取结果集较小的表作为驱动表，来join其他表。<br>【建议】尽可能的使用内连接，不要使用left join。</li>
+<li>3 事务<br>【建议】事务中INSERT|UPDATE|DELETE|REPLACE语句操作的行数控制在2000以内，以及WHERE子句中IN列表的传参个数控制在500以内。<br>【建议】批量操作数据时，需要控制事务处理间隔时间，进行必要的sleep，一般建议值5-10秒。<br>【建议】对于有auto_increment属性字段的表的插入操作，并发需要控制在200以内。<br>【强制】程序设计必须考虑“数据库事务隔离级别”带来的影响，包括脏读、不可重复读和幻读。线上建议事务隔离级别为repeatable-read。<br>【建议】事务里包含SQL不超过5个（支付业务除外）。因为过长的事务会导致锁数据较久，MySQL内部缓存、连接消耗过多等雪崩问题。<br>【建议】事务里更新语句尽量基于主键或unique key，如update … where id=XX; 否则会产生间隙锁，内部扩大锁定范围，导致系统性能下降，产生死锁。<br>【建议】尽量把一些典型外部调用移出事务，如调用webservice，访问文件存储等，从而避免事务过长。<br>【建议】对于MySQL主从延迟严格敏感的select语句，请开启事务强制访问主库。<br>【建议】事务里面的语句尽可能的把select放在事务前面，dml类的sql放在事务尾部，降低锁时间</li>
+<li>4 排序与分组<br>【建议】减少使用order by，和业务沟通能不排序就不排序，或将排序放到程序端去做。order by、group by、distinct这些语句较为耗费CPU，数据库的CPU资源是极其宝贵的，程序可以部署多套。<br>【建议】order by、group by、distinct这些SQL尽量利用索引直接检索出排序好的数据。如where a=1 order by可以利用key(a,b)。<br>【建议】包含了order by、group by、distinct这些查询的语句，where条件过滤出来的结果集请保持在1000行以内，否则SQL会很慢。</li>
+<li>5 线上禁止使用的SQL语句<br>【高危】禁用update|delete t1 … where a=XX limit XX; 这种带limit的更新语句。因为会导致主从不一致，导致数据错乱。建议加上order by PK。<br>【高危】禁止使用关联子查询，如update t1 set … where name in(select name from user where…);效率极其低下。<br>【强制】禁用procedure、function、trigger、views、event、外键约束。因为他们消耗数据库资源，降低数据库实例可扩展性。推荐都在程序端实现。<br>【强制】禁止联表更新语句，如update t1,t2 where t1.id=t2.id…。<br>【高危】除dba外，禁止做ddl类表结构变更操作</li>
+<li>核心原则<br>【建议】不在数据库做运算<br>【建议】程序能处理的不要交给数据库来操作<br>【建议】业务逻辑放在程序里面处理<br>【建议】数据库尽可能的只用来做存取数据<br>【建议】SQl语句尽可能简单</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/06/MySQL-常用规范/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-mysql-datetime与timestamp对比" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1413,85 +1496,6 @@ if __name__ == &apos;__main__&apos;:
 
 
   
-    <article id="post-mysql-event-遇到的坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/26/mysql-event-遇到的坑/">mysql event 遇到的坑</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/26/mysql-event-遇到的坑/" class="archive-article-date">
-  	<time datetime="2019-09-26T07:43:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>特 记录下 在使用mysql event中遇到的坑：</strong>  </p>
-<ol>
-<li>阿里云rds 5.6版本  定时任务执行的sql，用户无法通过 show processlist,查询information_schema.processlist视图 查询正在执行的sql<br><code>这个坑导致系统出问题时，排查不到正在执行的sql，从而定位不到问题</code></li>
-<li>mysql 慢sql 不记录定时任务执行过的慢sql</li>
-<li>mysql event中的慢sql，如果需要记录 可以开启general log，从general_log中查询</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/26/mysql-event-遇到的坑/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1506,7 +1510,7 @@ if __name__ == &apos;__main__&apos;:
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 gtt
+    		&copy; 2020 gtt
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

@@ -174,6 +174,85 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-event-遇到的坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/26/mysql-event-遇到的坑/">mysql event 遇到的坑</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/26/mysql-event-遇到的坑/" class="archive-article-date">
+  	<time datetime="2019-09-26T07:43:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>特 记录下 在使用mysql event中遇到的坑：</strong>  </p>
+<ol>
+<li>阿里云rds 5.6版本  定时任务执行的sql，用户无法通过 show processlist,查询information_schema.processlist视图 查询正在执行的sql<br><code>这个坑导致系统出问题时，排查不到正在执行的sql，从而定位不到问题</code></li>
+<li>mysql 慢sql 不记录定时任务执行过的慢sql</li>
+<li>mysql event中的慢sql，如果需要记录 可以开启general log，从general_log中查询</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/26/mysql-event-遇到的坑/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-limits-on-innodb-tables" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -866,7 +945,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 gtt
+    		&copy; 2020 gtt
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
