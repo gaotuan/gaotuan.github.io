@@ -174,6 +174,103 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-reference-Replication" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/06/mysql-reference-Replication/">mysql reference Replication</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/06/mysql-reference-Replication/" class="archive-article-date">
+  	<time datetime="2020-01-06T09:44:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="mysql-gtid-executed-table"><a href="#mysql-gtid-executed-table" class="headerlink" title="mysql.gtid_executed table:"></a>mysql.gtid_executed table:</h4><ul>
+<li>The mysql.gtid_executed table is provided for internal use by the MySQL server. It enables a slave to use GTIDs when binary logging is disabled on the slave, and it enables retention of the GTID state when the binary logs have been lost. Note that the mysql.gtid_executed table is cleared if you issue RESET MASTER.</li>
+<li>GTIDs are stored in the mysql.gtid_executed table only when gtid_mode is ON or ON_PERMISSIVE. If binary logging is disabled (log_bin is OFF), or if log_slave_updates is disabled, the server stores the GTID belonging to each transaction together with the transaction in the mysql.gtid_executed table at transaction commit time. In addition, the table is compressed periodically at a user-configurable rate, as described in mysql.gtid_executed Table Compression</li>
+<li>从MySQL 8.0.17开始不管binlog是否开启，事务提交更新mysql.gtid_executed表。</li>
+<li>8.0.17之前当binlog是开启状态时，只有binlog切换或者服务器关闭才更新gtid_executed表，这样有如下弊端：<br>1，服务器异常关闭时，gtid只写入到binlog中，没有写入gtid_executed表，当再次以skip-log-bin 重启时同步报错<br>2、The mysql.gtid_executed table does not hold a complete record of the GTIDs for all executed transactions. That information is provided by the global value of the gtid_executed system variable. In releases before MySQL 8.0.17 and with storage engines other than InnoDB, always use @@GLOBAL.gtid_executed, which is updated after every commit, to represent the GTID state for the MySQL server, instead of querying the mysql.gtid_executed table</li>
+<li>The MySQL server can write to the mysql.gtid_executed table even when the server is in read only or super read only mode</li>
+<li>When binary logging is enabled, the value of gtid_executed_compression_period is not used and the mysql.gtid_executed table is compressed on each binary log rotation.<h4 id="GTID-Life-Cycle："><a href="#GTID-Life-Cycle：" class="headerlink" title="GTID Life Cycle："></a>GTID Life Cycle：</h4></li>
+<li>In the following special cases, a single statement can generate multiple transactions, and therefore be assigned multiple GTIDs:<br>1、A stored procedure is invoked that commits multiple transactions. One GTID is generated for each transaction that the procedure commits.<br>2、A multi-table DROP TABLE statement drops tables of different types. Multiple GTIDs can be generated if any of the tables use storage engines that do not support atomic DDL, or if any of the tables are temporary tables.<br>3、A CREATE TABLE … SELECT statement is issued when row-based replication is in use (binlog_format=ROW). One GTID is generated for the CREATE TABLE action and one GTID is generated for the row-insert actions.</li>
+<li>Note that after you set gtid_next to a specific GTID, and the transaction has been committed or rolled back, an explicit SET @@SESSION.gtid_next statement must be issued before any other statement. You can use this to set the GTID value back to AUTOMATIC if you do not want to assign any more GTIDs explicitly.<h4 id="gtid-purged"><a href="#gtid-purged" class="headerlink" title="gtid_purged:"></a>gtid_purged:</h4></li>
+<li>The set of GTIDs in the gtid_purged system variable (@@GLOBAL.gtid_purged) contains the GTIDs of all the transactions that have been committed on the server, but do not exist in any binary log file on the server</li>
+<li>gtid_purged is a subset of gtid_executed. </li>
+<li>The following categories of GTIDs are in gtid_purged:<br>1、GTIDs of replicated transactions that were committed with binary logging disabled on the slave.<br>2、GTIDs of transactions that were written to a binary log file that has now been purged.<br>3、GTIDs that were added explicitly to the set by the statement SET @@GLOBAL.gtid_purged.</li>
+<li>You can change the value of gtid_purged in order to record on the server that the transactions in a certain GTID set have been applied, although they do not exist in any binary log on the server</li>
+<li>When you add GTIDs to gtid_purged, they are also added to gtid_executed</li>
+<li>The result is the set of GTIDs that have been used on the server, but are not currently recorded in a binary log file on the server, and this result is used to initialize gtid_purged.<h4 id="gtid"><a href="#gtid" class="headerlink" title="gtid"></a>gtid</h4></li>
+<li>The sets of GTIDs in the gtid_executed and gtid_purged system variables are itialized when the server starts</li>
+<li>The contents of Previous_gtids_log_event in the oldest and most recent binary log files are used to compute the gtid_executed and gtid_purged sets at server startup:</li>
+</ul>
+<h4 id="When-you-issue-RESET-MASTER-the-following-reset-operations-are-carried-out"><a href="#When-you-issue-RESET-MASTER-the-following-reset-operations-are-carried-out" class="headerlink" title="When you issue RESET MASTER, the following reset operations are carried out:"></a>When you issue RESET MASTER, the following reset operations are carried out:</h4><ul>
+<li>The value of the gtid_purged system variable is set to an empty string (‘’).</li>
+<li>The global value (but not the session value) of the gtid_executed system variable is set to an empty string.</li>
+<li>The mysql.gtid_executed table is cleared (see mysql.gtid_executed Table).</li>
+<li>If the server has binary logging enabled, the existing binary log files are deleted and the binary log index file is cleared.</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/06/mysql-reference-Replication/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-MySQL-常用规范" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -918,578 +1015,6 @@ if __name__ == &apos;__main__&apos;:
 
 
   
-    <article id="post-Online-DDL-Operations" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/11/Online-DDL-Operations/">online ddl operations</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/11/Online-DDL-Operations/" class="archive-article-date">
-  	<time datetime="2019-10-11T07:25:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>Concurrent DML is not permitted when adding an auto-increment column. Data is reorganized substantially, making it an expensive operation. At a minimum, ALGORITHM=INPLACE, LOCK=SHARED is required.</li>
-<li>Changing the column data type is only supported with ALGORITHM=COPY</li>
-<li>In-place ALTER TABLE does not support increasing the size of a VARCHAR column from less than 256 bytes to a size equal to or greater than 256 bytes</li>
-<li>Decreasing VARCHAR size using in-place ALTER TABLE is not supported. Decreasing VARCHAR size requires a table copy (ALGORITHM=COPY).</li>
-<li>For DDL operations that modify table data, you can determine whether a DDL operation performs changes in place or performs a table copy by looking at the “rows affected” value displayed after the command finishes</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>operation</th>
-<th>in place</th>
-<th>rebuilds table</th>
-<th>permits concurrent dml</th>
-<th>only modifies metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>index operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>creating or adding a secondary index</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>dropping an index</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>renaming an index</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>adding a fulltext index</td>
-<td>yes*</td>
-<td>no*</td>
-<td><strong>no</strong></td>
-<td>no</td>
-</tr>
-<tr>
-<td>adding a spatial index</td>
-<td>yes</td>
-<td>no</td>
-<td><strong>no</strong></td>
-<td>no</td>
-</tr>
-<tr>
-<td>changing the index type</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>operation</th>
-<th>in place</th>
-<th>rebuilds table</th>
-<th>permits concurrent dml</th>
-<th>only modifies metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>primary key operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>adding a primary key</td>
-<td>yes*</td>
-<td>yes*</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>dropping a primary key</td>
-<td>no</td>
-<td>yes</td>
-<td><strong>no</strong></td>
-<td>no</td>
-</tr>
-<tr>
-<td>dropping a primary key and adding another</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>operation</th>
-<th>in place</th>
-<th>rebuilds table</th>
-<th>permits concurrent dml</th>
-<th>only modifies metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>column operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>adding a column</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes*</td>
-<td>no</td>
-</tr>
-<tr>
-<td>dropping a column</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>renaming a column</td>
-<td>yes</td>
-<td>no</td>
-<td>yes*</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>reordering columns</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>setting a column default value</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>changing the column data type</td>
-<td>no</td>
-<td>yes</td>
-<td><strong>no</strong></td>
-<td>no</td>
-</tr>
-<tr>
-<td>extending varchar column size</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>dropping the column default value</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>changing the auto-increment value</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>no*</td>
-</tr>
-<tr>
-<td>making a column null</td>
-<td>yes</td>
-<td>yes*</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>making a column not null</td>
-<td>yes*</td>
-<td>yes*</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>modifying the definition of an enum or set column</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>In Place</th>
-<th>Rebuilds Table</th>
-<th>Permits Concurrent DML</th>
-<th>Only Modifies Metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Generated Column Operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Adding a STORED column</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Modifying STORED column order</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Dropping a STORED column</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Adding a VIRTUAL column</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Modifying VIRTUAL column order</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Dropping a VIRTUAL column</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>In Place</th>
-<th>Rebuilds Table</th>
-<th>Permits Concurrent DML</th>
-<th>Only Modifies Metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Foreign Key Operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Adding a foreign key constraint</td>
-<td>Yes*</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Dropping a foreign key constraint</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>In Place</th>
-<th>Rebuilds Table</th>
-<th>Permits Concurrent DML</th>
-<th>Only Modifies Metadata</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Table Operations:</code></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Changing the ROW_FORMAT</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Changing the KEY_BLOCK_SIZE</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Setting persistent table statistics</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Specifying a character set</td>
-<td>Yes</td>
-<td>Yes*</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Converting a character set</td>
-<td>No</td>
-<td>Yes*</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Optimizing a table</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Rebuilding with the FORCE option</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Performing a null rebuild</td>
-<td>Yes*</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Renaming a table</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-</tbody></table>
-<br>
-
-<table>
-<thead>
-<tr>
-<th>Partitioning Clause</th>
-<th>In Place</th>
-<th>Permits DML</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Partitioning Operations</code></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>PARTITION BY</td>
-<td>No</td>
-<td>No</td>
-<td>Permits ALGORITHM=COPY, LOCK={DEFAULT</td>
-</tr>
-<tr>
-<td>ADD PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Does not copy existing data for tables partitioned by RANGE or LIST. Concurrent queries are permitted for tables partitioned by HASH or LIST. MySQL copies the data while holding a shared lock.</td>
-</tr>
-<tr>
-<td>DROP PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Does not copy existing data for tables partitioned by RANGE or LIST.</td>
-</tr>
-<tr>
-<td>DISCARD PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT</td>
-</tr>
-<tr>
-<td>IMPORT PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT</td>
-</tr>
-<tr>
-<td>TRUNCATE PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Does not copy existing data. It merely deletes rows; it does not alter the definition of the table itself, or of any of its partitions.</td>
-</tr>
-<tr>
-<td>COALESCE PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by HASH or LIST, as MySQL copies the data while holding a shared lock.</td>
-</tr>
-<tr>
-<td>REORGANIZE PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by LINEAR HASH or LIST. MySQL copies data from affected partitions while holding a shared metadata lock.</td>
-</tr>
-<tr>
-<td>EXCHANGE PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td>ANALYZE PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td>CHECK PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td>OPTIMIZE PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>ALGORITHM and LOCK clauses are ignored. Rebuilds the entire table. See Section 22.3.4, “Maintenance of Partitions”.</td>
-</tr>
-<tr>
-<td>REBUILD PARTITION</td>
-<td>No</td>
-<td>No</td>
-<td>Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by LINEAR HASH or LIST. MySQL copies data from affected partitions while holding a shared metadata lock.</td>
-</tr>
-<tr>
-<td>REPAIR PARTITION</td>
-<td>Yes</td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td>REMOVE PARTITIONING</td>
-<td>No</td>
-<td>No</td>
-<td>Permits ALGORITHM=COPY, LOCK={DEFAULT</td>
-</tr>
-</tbody></table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/11/Online-DDL-Operations/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1591,11 +1116,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql,reference</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql,reference</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">

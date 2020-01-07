@@ -6,22 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>sql执行结果的奇怪现象--rand()函数 | gtt-博客</title>
+  <title>mysql reference Replication | gtt-博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近在优化 包含rand()函数的sql，发现了一个奇怪的现象：如果你看到下面这个图片圈圈中的sql执行结果不足为奇，那么说明你已经理解了这个sql 在mysql内部是怎么执行的，也就可以pass这篇文章了。select * from t where id=round(rand()*9+1);这个sql是怎么执行的呢？desc select * from t where id=round(rand">
+  <meta name="description" content="mysql.gtid_executed table: The mysql.gtid_executed table is provided for internal use by the MySQL server. It enables a slave to use GTIDs when binary logging is disabled on the slave, and it enables">
 <meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sql执行结果的奇怪现象--rand()函数">
-<meta property="og:url" content="http://yoursite.com/2019/11/20/sql执行结果的奇怪现象-rand-函数/index.html">
+<meta property="og:title" content="mysql reference Replication">
+<meta property="og:url" content="http://yoursite.com/2020/01/06/mysql-reference-Replication/index.html">
 <meta property="og:site_name" content="gtt-博客">
-<meta property="og:description" content="最近在优化 包含rand()函数的sql，发现了一个奇怪的现象：如果你看到下面这个图片圈圈中的sql执行结果不足为奇，那么说明你已经理解了这个sql 在mysql内部是怎么执行的，也就可以pass这篇文章了。select * from t where id=round(rand()*9+1);这个sql是怎么执行的呢？desc select * from t where id=round(rand">
+<meta property="og:description" content="mysql.gtid_executed table: The mysql.gtid_executed table is provided for internal use by the MySQL server. It enables a slave to use GTIDs when binary logging is disabled on the slave, and it enables">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/images/rand.png">
-<meta property="og:updated_time" content="2019-11-21T02:24:48.695Z">
+<meta property="og:updated_time" content="2020-01-07T03:04:20.189Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sql执行结果的奇怪现象--rand()函数">
-<meta name="twitter:description" content="最近在优化 包含rand()函数的sql，发现了一个奇怪的现象：如果你看到下面这个图片圈圈中的sql执行结果不足为奇，那么说明你已经理解了这个sql 在mysql内部是怎么执行的，也就可以pass这篇文章了。select * from t where id=round(rand()*9+1);这个sql是怎么执行的呢？desc select * from t where id=round(rand">
-<meta name="twitter:image" content="http://yoursite.com/images/rand.png">
+<meta name="twitter:title" content="mysql reference Replication">
+<meta name="twitter:description" content="mysql.gtid_executed table: The mysql.gtid_executed table is provided for internal use by the MySQL server. It enables a slave to use GTIDs when binary logging is disabled on the slave, and it enables">
   
     <link rel="alternative" href="/atom.xml" title="gtt-博客" type="application/atom+xml">
   
@@ -179,32 +177,50 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-sql执行结果的奇怪现象-rand-函数" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mysql-reference-Replication" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      sql执行结果的奇怪现象--rand()函数
+      mysql reference Replication
     </h1>
   
 
         
-        <a href="/2019/11/20/sql执行结果的奇怪现象-rand-函数/" class="archive-article-date">
-  	<time datetime="2019-11-20T06:32:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-20</time>
+        <a href="/2020/01/06/mysql-reference-Replication/" class="archive-article-date">
+  	<time datetime="2020-01-06T09:44:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-06</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近在优化 包含rand()函数的sql，发现了一个奇怪的现象：<br>如果你看到下面这个图片圈圈中的sql执行结果不足为奇，那么说明你已经理解了这个sql 在mysql内部是怎么执行的，也就可以pass这篇文章了。<br><img src="/images/rand.png" alt><br><code>select * from t where id=round(rand()*9+1);</code><br>这个sql是怎么执行的呢？<br>desc select * from t where id=round(rand()*9+1);;<br>+—-+————-+——-+——+—————+——+———+——+——+————-+<br>| id | select_type | table | type | possible_keys | key  | key_len | ref  | rows | Extra       |<br>+—-+————-+——-+——+—————+——+———+——+——+————-+<br>|  1 | SIMPLE      | t     | ALL  | NULL          | NULL | NULL    | NULL |   10 | Using where |<br>+—-+————-+——-+——+—————+——+———+——+——+————-+</p>
-<ul>
-<li>当使用rand()时，实际上是逐行提取数据，rand()每次生成一个随机数 再经过函数换算后，与当前行的id进行单行比对，  </li>
-<li>即先提取id=1的这行数据，然后和随机结果比对，相等则保留这个结果，再处理id=2的这行数据。每行数据都是这样处理，因此会出现图片中间结果。</li>
+        <h4 id="mysql-gtid-executed-table"><a href="#mysql-gtid-executed-table" class="headerlink" title="mysql.gtid_executed table:"></a>mysql.gtid_executed table:</h4><ul>
+<li>The mysql.gtid_executed table is provided for internal use by the MySQL server. It enables a slave to use GTIDs when binary logging is disabled on the slave, and it enables retention of the GTID state when the binary logs have been lost. Note that the mysql.gtid_executed table is cleared if you issue RESET MASTER.</li>
+<li>GTIDs are stored in the mysql.gtid_executed table only when gtid_mode is ON or ON_PERMISSIVE. If binary logging is disabled (log_bin is OFF), or if log_slave_updates is disabled, the server stores the GTID belonging to each transaction together with the transaction in the mysql.gtid_executed table at transaction commit time. In addition, the table is compressed periodically at a user-configurable rate, as described in mysql.gtid_executed Table Compression</li>
+<li>从MySQL 8.0.17开始不管binlog是否开启，事务提交更新mysql.gtid_executed表。</li>
+<li>8.0.17之前当binlog是开启状态时，只有binlog切换或者服务器关闭才更新gtid_executed表，这样有如下弊端：<br>1，服务器异常关闭时，gtid只写入到binlog中，没有写入gtid_executed表，当再次以skip-log-bin 重启时同步报错<br>2、The mysql.gtid_executed table does not hold a complete record of the GTIDs for all executed transactions. That information is provided by the global value of the gtid_executed system variable. In releases before MySQL 8.0.17 and with storage engines other than InnoDB, always use @@GLOBAL.gtid_executed, which is updated after every commit, to represent the GTID state for the MySQL server, instead of querying the mysql.gtid_executed table</li>
+<li>The MySQL server can write to the mysql.gtid_executed table even when the server is in read only or super read only mode</li>
+<li>When binary logging is enabled, the value of gtid_executed_compression_period is not used and the mysql.gtid_executed table is compressed on each binary log rotation.<h4 id="GTID-Life-Cycle："><a href="#GTID-Life-Cycle：" class="headerlink" title="GTID Life Cycle："></a>GTID Life Cycle：</h4></li>
+<li>In the following special cases, a single statement can generate multiple transactions, and therefore be assigned multiple GTIDs:<br>1、A stored procedure is invoked that commits multiple transactions. One GTID is generated for each transaction that the procedure commits.<br>2、A multi-table DROP TABLE statement drops tables of different types. Multiple GTIDs can be generated if any of the tables use storage engines that do not support atomic DDL, or if any of the tables are temporary tables.<br>3、A CREATE TABLE … SELECT statement is issued when row-based replication is in use (binlog_format=ROW). One GTID is generated for the CREATE TABLE action and one GTID is generated for the row-insert actions.</li>
+<li>Note that after you set gtid_next to a specific GTID, and the transaction has been committed or rolled back, an explicit SET @@SESSION.gtid_next statement must be issued before any other statement. You can use this to set the GTID value back to AUTOMATIC if you do not want to assign any more GTIDs explicitly.<h4 id="gtid-purged"><a href="#gtid-purged" class="headerlink" title="gtid_purged:"></a>gtid_purged:</h4></li>
+<li>The set of GTIDs in the gtid_purged system variable (@@GLOBAL.gtid_purged) contains the GTIDs of all the transactions that have been committed on the server, but do not exist in any binary log file on the server</li>
+<li>gtid_purged is a subset of gtid_executed. </li>
+<li>The following categories of GTIDs are in gtid_purged:<br>1、GTIDs of replicated transactions that were committed with binary logging disabled on the slave.<br>2、GTIDs of transactions that were written to a binary log file that has now been purged.<br>3、GTIDs that were added explicitly to the set by the statement SET @@GLOBAL.gtid_purged.</li>
+<li>You can change the value of gtid_purged in order to record on the server that the transactions in a certain GTID set have been applied, although they do not exist in any binary log on the server</li>
+<li>When you add GTIDs to gtid_purged, they are also added to gtid_executed</li>
+<li>The result is the set of GTIDs that have been used on the server, but are not currently recorded in a binary log file on the server, and this result is used to initialize gtid_purged.<h4 id="gtid"><a href="#gtid" class="headerlink" title="gtid"></a>gtid</h4></li>
+<li>The sets of GTIDs in the gtid_executed and gtid_purged system variables are itialized when the server starts</li>
+<li>The contents of Previous_gtids_log_event in the oldest and most recent binary log files are used to compute the gtid_executed and gtid_purged sets at server startup:</li>
 </ul>
-<p>这也就引入了 执行效率的问题：<br>如果t表有1000万数据就会匹配1000万次，即便有索引也没用，也要全表扫描，可见如果数据量巨大时，sql的执行效率非常的低效</p>
+<h4 id="When-you-issue-RESET-MASTER-the-following-reset-operations-are-carried-out"><a href="#When-you-issue-RESET-MASTER-the-following-reset-operations-are-carried-out" class="headerlink" title="When you issue RESET MASTER, the following reset operations are carried out:"></a>When you issue RESET MASTER, the following reset operations are carried out:</h4><ul>
+<li>The value of the gtid_purged system variable is set to an empty string (‘’).</li>
+<li>The global value (but not the session value) of the gtid_executed system variable is set to an empty string.</li>
+<li>The mysql.gtid_executed table is cleared (see mysql.gtid_executed Table).</li>
+<li>If the server has binary logging enabled, the existing binary log files are deleted and the binary log index file is cleared.</li>
+</ul>
 
       
 
@@ -305,7 +321,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/11/20/sql执行结果的奇怪现象-rand-函数/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/01/06/mysql-reference-Replication/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -319,18 +335,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/11/22/mysql慢查询日志丢失问题/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          mysql慢查询日志丢失问题
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/11/14/mysql-慢查询中的误区/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">mysql 慢查询中的误区</div>
+    <a href="/2020/01/06/MySQL-常用规范/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MySQL 常用规范</div>
       <i class="icon-circle-right"></i>
     </a>
   
