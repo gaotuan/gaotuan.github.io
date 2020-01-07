@@ -200,24 +200,33 @@
 <li>从MySQL 8.0.17开始不管binlog是否开启，事务提交更新mysql.gtid_executed表。</li>
 <li>8.0.17之前当binlog是开启状态时，只有binlog切换或者服务器关闭才更新gtid_executed表，这样有如下弊端：<br>1，服务器异常关闭时，gtid只写入到binlog中，没有写入gtid_executed表，当再次以skip-log-bin 重启时同步报错<br>2、The mysql.gtid_executed table does not hold a complete record of the GTIDs for all executed transactions. That information is provided by the global value of the gtid_executed system variable. In releases before MySQL 8.0.17 and with storage engines other than InnoDB, always use @@GLOBAL.gtid_executed, which is updated after every commit, to represent the GTID state for the MySQL server, instead of querying the mysql.gtid_executed table</li>
 <li>The MySQL server can write to the mysql.gtid_executed table even when the server is in read only or super read only mode</li>
-<li>When binary logging is enabled, the value of gtid_executed_compression_period is not used and the mysql.gtid_executed table is compressed on each binary log rotation.<h4 id="GTID-Life-Cycle："><a href="#GTID-Life-Cycle：" class="headerlink" title="GTID Life Cycle："></a>GTID Life Cycle：</h4></li>
+<li>When binary logging is enabled, the value of gtid_executed_compression_period is not used and the mysql.gtid_executed table is compressed on each binary log rotation.  </li>
+</ul>
+<h4 id="GTID-Life-Cycle："><a href="#GTID-Life-Cycle：" class="headerlink" title="GTID Life Cycle："></a>GTID Life Cycle：</h4><ul>
 <li>In the following special cases, a single statement can generate multiple transactions, and therefore be assigned multiple GTIDs:<br>1、A stored procedure is invoked that commits multiple transactions. One GTID is generated for each transaction that the procedure commits.<br>2、A multi-table DROP TABLE statement drops tables of different types. Multiple GTIDs can be generated if any of the tables use storage engines that do not support atomic DDL, or if any of the tables are temporary tables.<br>3、A CREATE TABLE … SELECT statement is issued when row-based replication is in use (binlog_format=ROW). One GTID is generated for the CREATE TABLE action and one GTID is generated for the row-insert actions.</li>
-<li>Note that after you set gtid_next to a specific GTID, and the transaction has been committed or rolled back, an explicit SET @@SESSION.gtid_next statement must be issued before any other statement. You can use this to set the GTID value back to AUTOMATIC if you do not want to assign any more GTIDs explicitly.<h4 id="gtid-purged"><a href="#gtid-purged" class="headerlink" title="gtid_purged:"></a>gtid_purged:</h4></li>
+<li>Note that after you set gtid_next to a specific GTID, and the transaction has been committed or rolled back, an explicit SET @@SESSION.gtid_next statement must be issued before any other statement. You can use this to set the GTID value back to AUTOMATIC if you do not want to assign any more GTIDs explicitly.  </li>
+</ul>
+<h4 id="gtid-purged"><a href="#gtid-purged" class="headerlink" title="gtid_purged:"></a>gtid_purged:</h4><ul>
 <li>The set of GTIDs in the gtid_purged system variable (@@GLOBAL.gtid_purged) contains the GTIDs of all the transactions that have been committed on the server, but do not exist in any binary log file on the server</li>
 <li>gtid_purged is a subset of gtid_executed. </li>
 <li>The following categories of GTIDs are in gtid_purged:<br>1、GTIDs of replicated transactions that were committed with binary logging disabled on the slave.<br>2、GTIDs of transactions that were written to a binary log file that has now been purged.<br>3、GTIDs that were added explicitly to the set by the statement SET @@GLOBAL.gtid_purged.</li>
 <li>You can change the value of gtid_purged in order to record on the server that the transactions in a certain GTID set have been applied, although they do not exist in any binary log on the server</li>
 <li>When you add GTIDs to gtid_purged, they are also added to gtid_executed</li>
-<li>The result is the set of GTIDs that have been used on the server, but are not currently recorded in a binary log file on the server, and this result is used to initialize gtid_purged.<h4 id="gtid"><a href="#gtid" class="headerlink" title="gtid"></a>gtid</h4></li>
-<li>The sets of GTIDs in the gtid_executed and gtid_purged system variables are itialized when the server starts</li>
-<li>The contents of Previous_gtids_log_event in the oldest and most recent binary log files are used to compute the gtid_executed and gtid_purged sets at server startup:</li>
+<li>The result is the set of GTIDs that have been used on the server, but are not currently recorded in a binary log file on the server, and this result is used to initialize gtid_purged.  </li>
 </ul>
-<h4 id="When-you-issue-RESET-MASTER-the-following-reset-operations-are-carried-out"><a href="#When-you-issue-RESET-MASTER-the-following-reset-operations-are-carried-out" class="headerlink" title="When you issue RESET MASTER, the following reset operations are carried out:"></a>When you issue RESET MASTER, the following reset operations are carried out:</h4><ul>
+<h4 id="gtid"><a href="#gtid" class="headerlink" title="gtid:"></a>gtid:</h4><ul>
+<li>The sets of GTIDs in the gtid_executed and gtid_purged system variables are itialized when the server starts</li>
+<li>The contents of Previous_gtids_log_event in the oldest and most recent binary log files are used to compute the gtid_executed and gtid_purged sets at server startup</li>
+</ul>
+<h4 id="RESET-MASTER"><a href="#RESET-MASTER" class="headerlink" title="RESET MASTER:"></a>RESET MASTER:</h4><ul>
+<li>When you issue RESET MASTER, the following reset operations are carried out:</li>
+</ul>
+<ol>
 <li>The value of the gtid_purged system variable is set to an empty string (‘’).</li>
 <li>The global value (but not the session value) of the gtid_executed system variable is set to an empty string.</li>
 <li>The mysql.gtid_executed table is cleared (see mysql.gtid_executed Table).</li>
 <li>If the server has binary logging enabled, the existing binary log files are deleted and the binary log index file is cleared.</li>
-</ul>
+</ol>
 
       
 
