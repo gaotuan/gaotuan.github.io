@@ -174,6 +174,108 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Understanding-the-truncate-flow" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/14/Understanding-the-truncate-flow/">Understanding the truncate flow</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/14/Understanding-the-truncate-flow/" class="archive-article-date">
+  	<time datetime="2020-01-14T05:51:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="Understanding-the-truncate-flow"><a href="#Understanding-the-truncate-flow" class="headerlink" title="Understanding the truncate flow"></a>Understanding the truncate flow</h4><p>Step-1: Perform intiial sanity check to ensure table can be truncated.<br>This would include check for tablespace discard status, ibd file missing, etc ….</p>
+<p>Step-2: Start transaction (only for non-temp table as temp-table don’t modify any data on disk doesn’t need transaction object).</p>
+<p>Step-3: Validate ownership of needed locks (Exclusive lock). Ownership will also ensure there is no active SQL queries, INSERT,SELECT, …..</p>
+<p>Step-4: Stop all the background process associated with table.</p>
+<p>Step-5: There are few foreign key related constraint under which we can’t truncate table (due to referential integrity unless it is turned off). Ensure this condition is satisfied.</p>
+<p>Step-6: Truncate operation can be rolled back in case of error till some point. Associate rollback segment to record undo log.</p>
+<p>Step-7: Generate new table-id. Why we need new table-id ?<br>Purge and rollback case: we assign a new table id for the table. Since purge and rollback look for the table based on the table id,they see the table as ‘dropped’ and discard their operations.</p>
+<p>Step-8: Log information about tablespace which includes table and index information. If there is a crash in the next step then during recovery we will attempt to fixup the operation.</p>
+<p>Step-9: Drop all indexes (this include freeing of the pages associated with them).</p>
+<p>Step-10: Re-create new indexes.</p>
+<p>Step-11: Update new table-id to in-memory cache (dictionary), on-disk (INNODB_SYS_TABLES). INNODB_SYS_INDEXES also needs to be updated to reflect updated root-page-no of new index created and updated table-id.</p>
+<p>Step-12: Cleanup Stage. Reset auto-inc value to 1. Release all the locks. Commit the transaction. Update trx operation state.</p>
+<p>Notes:</p>
+<ul>
+<li><p>On error, log checkpoint is done followed writing of magic number to truncate log file. If servers crashes after truncate, fix-up action will not be applied.</p>
+</li>
+<li><p>log checkpoint is done before starting truncate table to ensure that previous REDO log entries are not applied if current truncatecrashes. Consider following use-case:</p>
+</li>
+<li><p>create table …. insert/load table …. truncate table (crash)</p>
+</li>
+<li><p>on restart table is restored …. truncate table (crash)</p>
+</li>
+<li><p>on restart (assuming default log checkpoint is not done) will have 2 REDO log entries for same table. (Note 2 REDO log entries for different table is not an issue).<br>For system-tablespace we can’t truncate the tablespace so we need to initiate a local cleanup that involves dropping of indexes and re-creating them. If we apply stale entry we might end-up issuing drop on wrong indexes.</p>
+</li>
+<li><p>Insert buffer: TRUNCATE TABLE is analogous to DROP TABLE, so we do not have to remove insert buffer records, as the insert buffer works at a low level. If a freed page is later reallocated, the allocator will remove the ibuf entries for it. When we prepare to truncate *.ibd files, we remove all entries for the table in the insert buffer tree. This is not strictly necessary, but we can free up some space in the system tablespace.</p>
+</li>
+<li><p>Linear readahead and random readahead: we use the same method as in 3) to discard ongoing operations. (This is only relevant for TRUNCATE TABLE by TRUNCATE TABLESPACE.) Ensure that the table will be dropped by trx_rollback_active() in case of a crash.</p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/14/Understanding-the-truncate-flow/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-mysql-reference-Replication" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -914,87 +1016,6 @@ if __name__ == &apos;__main__&apos;:
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/11/08/redis-batch-delete-keys/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql-performance-reference" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/31/mysql-performance-reference/">mysql-performance-reference</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/31/mysql-performance-reference/" class="archive-article-date">
-  	<time datetime="2019-10-31T03:06:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="note"><a href="#note" class="headerlink" title="note:"></a>note:</h4><ul>
-<li>Modifications to the setup_actors table affect only foreground threads created subsequent to the modification, not existing threads. To affect existing threads, modify the INSTRUMENTED and HISTORY columns of threads table rows.</li>
-<li>global_instrumentation is the highest level consumer. If global_instrumentation is NO, it disables global instrumentation. All other settings are lower level and are not checked; it does not matter what they are set to</li>
-<li>thread_instrumentation is checked only if global_instrumentation is YES</li>
-<li>If thread_instrumentation is YES, the Performance Schema maintains thread-specific information and also checks events_xxx_current consumers</li>
-<li>if global_instrumentation is enabled, thread_instrumentation is checked. If thread_instrumentation is enabled, the events_xxx_current consumers are checked. If of these events_waits_current is enabled, events_waits_history and events_waits_history_long are checked.</li>
-<li></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/31/mysql-performance-reference/">展开全文 >></a>
         </p>
       
 
