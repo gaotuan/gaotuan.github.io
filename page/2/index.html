@@ -174,6 +174,192 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-慢查询中的误区" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/14/mysql-慢查询中的误区/">mysql 慢查询中的误区</a>
+    </h1>
+  
+
+        
+        <a href="/2019/11/14/mysql-慢查询中的误区/" class="archive-article-date">
+  	<time datetime="2019-11-14T12:02:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先 看下慢查询日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Time: 191114 19:39:57</span><br><span class="line"># User@Host: gaotuan[gaotuan] @ localhost []  Id:  3356</span><br><span class="line"># Query_time: 8.165084  Lock_time: 8.146073 Rows_sent: 0  Rows_examined: 1</span><br><span class="line">SET timestamp=1573731597;</span><br><span class="line">update t set id=4;</span><br></pre></td></tr></table></figure>
+
+<p>1、start_time：看字面意思很容易会被误认为“sql开始的时间”  但实际上记录的是sql结束的时间<br>2、Query_time=real time+lock time<br>3、long_query_time这个参数官方文档的解释是这样的：This value is measured in real time, not CPU time(不包含等待锁的时间)<br>因此在long_query_time=2的情况下，如果一个SQL的执行时间是4s，其中3s在等待锁，那么这个sql是不会记录在慢查询日志中的</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/11/14/mysql-慢查询中的误区/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-redis-batch-delete-keys" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/08/redis-batch-delete-keys/">redis batch delete keys</a>
+    </h1>
+  
+
+        
+        <a href="/2019/11/08/redis-batch-delete-keys/" class="archive-article-date">
+  	<time datetime="2019-11-08T09:25:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="python3脚本-批量删除key"><a href="#python3脚本-批量删除key" class="headerlink" title="python3脚本 批量删除key"></a>python3脚本 批量删除key</h4><html>
+
+<pre><code>#!/usr/bin/env python3
+import redis
+from datetime import datetime, timedelta
+import math
+nowtime = datetime.now().strftime(&quot;%Y%m%d %H:%M:%S&quot;)
+
+host=&apos;addr&apos;
+passwd=&apos;pass&apos;
+port=6379
+v_cnt=1000  #每次scan处理的size
+v_match=&apos;x:*:notice*:*read*&apos; #匹配模式
+
+def check_redis():
+    try:
+        r = redis.StrictRedis(host=host, port=port, password=passwd)
+        i = 0
+        c = 0
+        while True:
+            clas = r.scan(i, match=v_match, count=v_cnt)
+            i = clas[0]
+            keys = clas[1]
+            for ke in keys:
+                s=ke.decode()
+                #print(ke.decode())
+                r.delete(s)
+                c=c+1
+            if i == 0:
+                break
+        print(&quot;all--&gt;&gt;%d&quot; %(c))
+    except Exception as e:
+        print(&quot;Exception find:&quot;, e)
+
+
+if __name__ == &apos;__main__&apos;:
+    check_redis();</code></pre></html>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">redis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/11/08/redis-batch-delete-keys/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-mysql-performance-reference" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
